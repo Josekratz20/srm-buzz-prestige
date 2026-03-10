@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin - Devotionals</title>
+</head>
+
+<body style="font-family: Arial; padding:40px;">
+
+    <h2>Admin - Add Devotional</h2>
+
+    <form id="devotionalForm">
+        <input type="text" id="title" placeholder="Title" required style="width:300px;"><br><br>
+        <textarea id="content" placeholder="Content" required style="width:300px;height:120px;"></textarea><br><br>
+        <button type="submit">Save Devotional</button>
+    </form>
+
+    <hr>
+
+    <h3>Existing Devotionals</h3>
+    <div id="devotionalList"></div>
+
+    <script src="/js/admin-devotional.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>SRM Buzz</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/theme.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../images/logo.png" alt="SRM Buzz Logo">
+        </div>
+        <div class="menu-toggle" id="menu-toggle">☰</div>
+        <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/pages/devotional.html">Devotional</a></li>
+            <li><a href="/pages/events.html">Events</a></li>
+            <li><a href="/pages/gallery.html">Gallery</a></li>
+            <li><a href="/pages/contact.html">Contact</a></li>
+            <button id="theme-toggle">🌙</button>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>Daily Devotionals</h1>
+        <p>Be inspired. Be uplifted. Grow spiritually every day.</p>
+    </section>
+
+    <div id="devotionalWall" class="content-container"></div>
+
+    <script src="/js/devotional.js"></script>
+    const toggle = document.getElementById("menu-toggle");
+    const links = document.getElementById("nav-links");
+
+    toggle.addEventListener("click", () => {
+    links.classList.toggle("active");
+    });
+
+</body>
+
+</html>

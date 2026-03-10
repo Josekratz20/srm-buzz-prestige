@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SRM Merchandise</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="/js/theme.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <div class="logo">
+                <img src="../images/logo.png" alt="SRM Buzz Logo">
+            </div>
+            <div class="menu-toggle" id="menu-toggle">☰</div>
+        </div>
+        <a href="/">Home</a>
+        <a href="/pages/gallery.html">Gallery</a>
+        <a href="/pages/merchandise.html">Merch</a>
+        <a href="/pages/gossip.html">SRM Buzz Updates</a>
+        <button id="theme-toggle">🌙</button>
+    </nav>
+
+    <h1>SRM Merchandise</h1>
+    <div class="hero">
+        <h1>SRM Merchandise</h1>
+        <p>Official SRM gear. Wear the vibe. Live the culture.</p>
+    </div>
+
+    <div id="merch-container" class="card-grid"></div>
+
+
+    <script>
+        const container = document.getElementById("merch-container");
+
+        async function loadMerch() {
+            container.innerHTML = `<div class="spinner"></div>`;
+
+            try {
+                const res = await fetch("/api/merchandise");
+                const data = await res.json();
+
+                container.innerHTML = "";
+
+                if (data.length === 0) {
+                    container.innerHTML = "<p>No merchandise available yet.</p>";
+                    return;
+                }
+
+                data.reverse().forEach(item => {
+                    container.innerHTML += `
+        <div class="modern-card">
+          <img src="${item.imageUrl}" alt="${item.name}">
+          <div class="modern-card-content">
+            <h3>${item.name}</h3>
+            <p>${item.description}</p>
+            <div class="price-tag">KES ${item.price}</div>
+          </div>
+          
+        </div>
+        
+      `;
+                });
+
+            } catch (err) {
+                container.innerHTML = "<p>Error loading merchandise.</p>";
+            }
+        }
+
+        const toggle = document.getElementById("menu-toggle");
+        const links = document.getElementById("nav-links");
+
+        toggle.addEventListener("click", () => {
+            links.classList.toggle("active");
+        });
+
+        loadMerch();
+    </script>
+
+</body>
+
+</html>

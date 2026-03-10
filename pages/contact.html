@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | SRM Buzz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="/js/theme.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43);
+            color: white;
+        }
+
+        .section {
+            padding: 60px 20px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1,
+        h2 {
+            color: gold;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: #1c2b33;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 12px 25px;
+            background: gold;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        iframe {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<!-- NAVIGATION BAR -->
+<nav class="navbar">
+    <div class="logo">
+        <img src="../images/logo.png" alt="SRM Buzz Logo">
+    </div>
+    <div class="menu-toggle" id="menu-toggle">☰</div>
+    <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="divinity.html">Divinity</a></li>
+        <li><a href="devotional.html">Devotional</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <button id="theme-toggle">🌙</button>
+    </ul>
+</nav>
+
+
+
+<style>
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(15, 32, 39, 0.97);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 5%;
+        z-index: 1000;
+        box-sizing: border-box;
+    }
+
+    .logo {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: gold;
+        white-space: nowrap;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 18px;
+        margin: 0;
+        padding: 0;
+        flex-wrap: wrap;
+        /* allows wrapping instead of hiding */
+    }
+
+    .nav-links li {
+        display: inline-block;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: gold;
+    }
+
+
+
+    /* prevent content hiding under navbar */
+    body {
+        padding-top: 70px;
+    }
+</style>
+
+<body>
+
+    <div class="section">
+        <h1>📞 Let’s Connect</h1>
+
+        <p class="intro">
+            At SRM Buzz, connection is more than communication — it is community.
+            Whether you are reaching out to partner with us, invite us to your event,
+            join our mission, or simply ask a question, we are always ready to listen.
+
+            We believe meaningful conversations build meaningful impact.
+            Your message matters. Your voice matters. And your vision matters.
+
+            Reach out to us today — let’s build something powerful together.
+        </p>
+
+        <div class="contact-grid">
+
+            <div class="card">
+                <h2>📬 Send Us a Message</h2>
+
+                <section class="contact-section">
+
+                    <h2>Send Us Feedback</h2>
+
+                    <form action="https://formsubmit.co/el/foweza" method="POST">
+
+                        <input type="text" name="name" placeholder="Your Name" required>
+
+                        <input type="email" name="email" placeholder="Your Email" required>
+
+                        <textarea name="message" placeholder="Your feedback..." required></textarea>
+
+                        <button type="submit">Send Feedback</button>
+
+                    </form>
+
+                </section>
+                <section class="contact-section">
+
+                    <h2>Send Us Feedback</h2>
+
+                    <form action="https://formsubmit.el/foweza" method="POST">
+
+                        <input type="text" name="name" placeholder="Your Name" required>
+
+                        <input type="email" name="email" placeholder="Your Email" required>
+
+                        <textarea name="message" placeholder="Your feedback..." required></textarea>
+
+                        <button type="submit">Send Feedback</button>
+
+                    </form>
+
+                </section>
+
+                <p id="formMessage"></p>
+
+                <p class="footer-note">
+                    We typically respond within 24–48 hours.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>📍 Visit Us</h2>
+
+                <p>
+                    <strong>Location:</strong><br>
+                    Embu Scout Centre<br>
+                    Embu, Kenya
+                </p>
+
+                <p>
+                    <strong>Email:</strong><br>
+                    info@srmbuzz.org
+                </p>
+
+                <p>
+                    <strong>Phone:</strong><br>
+                    +254 722 290 106
+                </p>
+
+                <p>
+                    Our doors are open for collaboration, mentorship sessions,
+                    leadership engagements, and community initiatives.
+                </p>
+
+                <iframe src="https://maps.google.com/maps?q=Embu%20Scout%20Centre&t=&z=13&ie=UTF8&iwloc=&output=embed">
+                </iframe>
+
+            </div>
+
+        </div>
+        <section class="contact-section">
+
+            <h2>Send Us Feedback</h2>
+
+            <form action="https://formsubmit.co/josenjuguna688@gmail.com" method="POST">
+
+                <input type="text" name="name" placeholder="Your Name" required>
+
+                <input type="email" name="email" placeholder="Your Email" required>
+
+                <textarea name="message" placeholder="Your feedback..." required></textarea>
+
+                <button type="submit">Send Feedback</button>
+
+            </form>
+
+        </section>
+
+        <p id="statusMessage"></p>
+
+        <script src="/js/contact.js"></script>
+        <div class="footer-note">
+            “Alone we can do so little; together we can do so much.”
+        </div>
+
+    </div>
+
+    <script>
+        function submitForm() {
+            document.getElementById("formMessage").innerText =
+                "Thank you for reaching out! We’ll get back to you soon.";
+            return false;
+        }
+        const toggle = document.getElementById("menu-toggle");
+        const links = document.getElementById("nav-links");
+
+        toggle.addEventListener("click", () => {
+            links.classList.toggle("active");
+        });
+    </script>
+
+</body>
+
+</html>

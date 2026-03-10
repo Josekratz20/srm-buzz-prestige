@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1772378557512,
+    "name": "kofia",
+    "price": "700",
+    "description": "small size",
+    "imageUrl": "/uploads/1772378557498.png",
+    "date": "2026-03-01T15:22:37.512Z"
+  },
+  {
+    "id": 1772378613536,
+    "name": "belt",
+    "price": "650",
+    "description": "small,median",
+    "imageUrl": "/uploads/1772378613239.JPG",
+    "date": "2026-03-01T15:23:33.536Z"
+  },
+  {
+    "id": 1772378730307,
+    "name": "scarf",
+    "price": "150",
+    "description": "srm large  ",
+    "imageUrl": "/uploads/1772378730100.JPG",
+    "date": "2026-03-01T15:25:30.307Z"
+  }
+]

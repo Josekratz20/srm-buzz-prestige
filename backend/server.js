@@ -1,0 +1,225 @@
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
+
+
+const app = express();
+const PORT = 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, "../public")));
+
+// Serve frontend from root
+app.use(express.static(path.join(__dirname, "..")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Helper functions
+function readData(file) {
+    const filePath = path.join(__dirname, "..", "data", file);
+
+    if (!fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, "[]");
+    }
+
+    return JSON.parse(fs.readFileSync(filePath));
+}
+
+function writeData(file, data) {
+    const filePath = path.join(__dirname, "..", "data", file);
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+const uploadPath = path.join(__dirname, "../public/uploads");
+
+if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
+}
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadPath);
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+/* =========================
+   DEVOTIONAL ROUTES
+========================= */
+
+/* =========================
+   DEVOTIONAL ROUTES
+========================= */
+
+app.get("/api/devotionals", (req, res) => {
+    res.json(readData("devotionals.json"));
+});
+
+app.post("/api/devotionals", (req, res) => {
+    const data = readData("devotionals.json");
+
+    const newItem = {
+        id: Date.now(),
+        title: req.body.title,
+        content: req.body.content
+    };
+
+    data.push(newItem);
+    writeData("devotionals.json", data);
+
+    res.json({ message: "Saved" });
+});
+
+app.delete("/api/devotionals/:id", (req, res) => {
+    let data = readData("devotionals.json");
+
+    const id = parseInt(req.params.id);
+
+    data = data.filter(item => item.id !== id);
+
+    writeData("devotionals.json", data);
+
+    res.json({ message: "Deleted" });
+});
+/* =========================
+   GALLERY ROUTES
+========================= */
+
+app.get("/api/gallery", (req, res) => {
+    res.json(readData("gallery.json"));
+});
+
+app.post("/api/gallery", upload.single("image"), (req, res) => {
+    const data = readData("gallery.json");
+
+    const newItem = {
+        id: Date.now(),
+        imageUrl: "/uploads/" + req.file.filename,
+        caption: req.body.caption,
+        date: new Date().toISOString()
+    };
+
+    data.push(newItem);
+    writeData("gallery.json", data);
+
+    res.json({ message: "Uploaded" });
+});
+
+app.delete("/api/gallery/:id", (req, res) => {
+    const data = readData("gallery.json");
+
+    const filtered = data.filter(item => item.id != req.params.id);
+
+    writeData("gallery.json", filtered);
+
+    res.json({ message: "Deleted successfully" });
+});
+
+/* =========================
+   EVENTS ROUTES
+========================= */
+
+app.get("/api/events", (req, res) => {
+    res.json(readData("events.json"));
+});
+
+app.post("/api/events", (req, res) => {
+    const data = readData("events.json");
+    data.push(req.body);
+    writeData("events.json", data);
+    res.json({ message: "Event saved" });
+});
+
+/* =========================
+   FEEDBACK ROUTES
+========================= */
+
+app.get("/api/feedback", (req, res) => {
+    res.json(readData("feedback.json"));
+});
+
+app.post("/api/feedback", (req, res) => {
+    const data = readData("feedback.json");
+    data.push(req.body);
+    writeData("feedback.json", data);
+    res.json({ message: "Feedback saved" });
+});
+app.post("/api/merchandise", upload.single("image"), (req, res) => {
+    const data = readData("merchandise.json");
+
+    const newItem = {
+        id: Date.now(),
+        name: req.body.name,
+        price: req.body.price,
+        description: req.body.description,
+        imageUrl: "/uploads/" + req.file.filename,
+        date: new Date().toISOString()
+    };
+
+    data.push(newItem);
+    writeData("merchandise.json", data);
+
+    res.json({ message: "Product added successfully" });
+});
+app.get("/api/merchandise", (req, res) => {
+    res.json(readData("merchandise.json"));
+});
+app.delete("/api/merchandise/:id", (req, res) => {
+    const data = readData("merchandise.json");
+    const filtered = data.filter(item => item.id != req.params.id);
+
+    writeData("merchandise.json", filtered);
+
+    res.json({ message: "Product deleted" });
+});
+
+
+
+app.post("/api/news", upload.single("image"), (req, res) => {
+    const data = readData("news.json");
+
+    const newItem = {
+        id: Date.now(),
+        title: req.body.title,
+        content: req.body.content,
+        imageUrl: "/uploads/" + req.file.filename,
+        date: new Date().toISOString()
+    };
+
+    data.push(newItem);
+    writeData("news.json", data);
+
+    res.json({ message: "News posted successfully" });
+}); app.post("/api/news", upload.single("image"), (req, res) => {
+    const data = readData("news.json");
+
+    const newItem = {
+        id: Date.now(),
+        title: req.body.title,
+        content: req.body.content,
+        imageUrl: "/uploads/" + req.file.filename,
+        date: new Date().toISOString()
+    };
+
+    data.push(newItem);
+    writeData("news.json", data);
+
+    res.json({ message: "News posted successfully" });
+});
+app.get("/api/news", (req, res) => {
+    res.json(readData("news.json"));
+});
+app.delete("/api/news/:id", (req, res) => {
+    const data = readData("news.json");
+    const filtered = data.filter(item => item.id != req.params.id);
+
+    writeData("news.json", filtered);
+
+    res.json({ message: "News deleted" });
+});
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+});

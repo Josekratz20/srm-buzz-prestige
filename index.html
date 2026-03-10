@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRM Buzz | Empowering Purpose</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary: #0f2027;
+            --secondary: #203a43;
+            --accent: gold;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            background: var(--primary);
+            overflow-x: hidden;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            animation: slideshow 20s infinite;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        @keyframes slideshow {
+            0% {
+                background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d');
+            }
+
+            33% {
+                background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf');
+            }
+
+            66% {
+                background-image: url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d');
+            }
+
+            100% {
+                background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d');
+            }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeIn 2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        .cta-buttons button {
+            margin: 15px;
+            padding: 12px 25px;
+            background: var(--accent);
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* SECTION STYLE */
+        .section {
+            padding: 100px 10%;
+            background: var(--secondary);
+        }
+
+        .section:nth-child(even) {
+            background: var(--primary);
+        }
+
+        .section h2 {
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            line-height: 1.8;
+            max-width: 900px;
+        }
+
+        /* SERVICES GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: #1c2b33;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        /* MOVING FOOTER */
+        .ticker {
+            background: black;
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 15s linear infinite;
+            color: gold;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<!-- NAVIGATION BAR -->
+<nav class="navbar">
+
+    <div class="logo">SRM Buzz</div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pages/devotional.html">Devotional</a></li>
+        <li><a href="pages/events.html">Events</a></li>
+        <li><a href="pages/gallery.html">Gallery</a></li>
+        <li><a href="pages/contact.html">Contact</a></li>
+        <a href="pages/merchandise.html">Merch</a>
+        <a href="pages/gossip.html">SRM Buzz Updates</a>
+
+    </ul>
+</nav>
+
+<style>
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(15, 32, 39, 0.97);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 5%;
+        z-index: 1000;
+        box-sizing: border-box;
+    }
+
+    .logo {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: gold;
+        white-space: nowrap;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 18px;
+        margin: 0;
+        padding: 0;
+        flex-wrap: wrap;
+        /* allows wrapping instead of hiding */
+    }
+
+    .nav-links li {
+        display: inline-block;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: gold;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(15, 32, 39, 0.97);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 5%;
+        z-index: 1000;
+        box-sizing: border-box;
+    }
+
+    .logo {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: gold;
+        white-space: nowrap;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 18px;
+        margin: 0;
+        padding: 0;
+        flex-wrap: wrap;
+        /* allows wrapping instead of hiding */
+    }
+
+    .nav-links li {
+        display: inline-block;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: gold;
+    }
+
+
+    /* prevent content hiding under navbar */
+    body {
+        padding-top: 70px;
+    }
+</style>
+
+<body>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Empowering Purpose. Mentoring Champions. Transforming Lives.</h1>
+            <p>
+                Welcome to <strong>SRM Buzz</strong>, where vision meets action.
+                We prepare individuals to walk in purpose, steward their experiences wisely,
+                and lead transformative lives through mentorship, leadership development,
+                spiritual empowerment, and intentional impact.
+            </p>
+
+            <div class="cta-buttons">
+                <button onclick="location.href='contact.html'">Book a Session</button>
+
+                <button onclick="location.href='contact.html'">Book a Session</button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="section">
+        <h2>Who We Are</h2>
+        <p>
+            Born from a divine burden to mentor through experience, SRM Buzz is more than a platform — it is a movement.
+            Founded by Pastor E. Masaba, our work is grounded in faith, shaped by truth,
+            and committed to raising leaders who influence society with wisdom and integrity.
+        </p>
+
+        <h2>Our Mission</h2>
+        <p>
+            To inspire, transform, and empower individuals to discover their God-given identity,
+            live purposefully, and influence generations through truth and experiential mentorship.
+        </p>
+
+        <h2>Our Vision</h2>
+        <p>
+            To raise purpose-driven champions equipped through mentorship,
+            spiritual empowerment, and intentional leadership development.
+        </p>
+
+        <h2>Core Values</h2>
+        <p>
+            Christ-Centeredness • Purpose & Identity • Mentorship through Experience • Excellence • Generational
+            Empowerment • Servant Leadership
+        </p>
+
+    </div>
+
+    <!-- BLOG -->
+    <div class="section">
+        <h2>Divine Downloads & Life Lessons</h2>
+        <p>
+            Explore spiritual insights, leadership wisdom, and experiential reflections
+            designed to help you grow in faith, identity, and influence.
+        </p>
+
+        <ul>
+            <li>Mentoring Through Experience</li>
+            <li>Spiritual Growth & Identity</li>
+            <li>Purpose and Leadership</li>
+            <li>Faith in Action</li>
+        </ul>
+
+        <button onclick="location.href='blog.html'">Explore the Blog</button>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="section">
+        <h2>Work With Pastor E. Masaba</h2>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>Transformational Coaching</h3>
+                <p>Personal and spiritual development designed to unlock your potential.</p>
+            </div>
+
+            <div class="card">
+                <h3>Chaplain Services</h3>
+                <p>Spiritual guidance for institutions, events, and individuals.</p>
+            </div>
+
+            <div class="card">
+                <h3>MC & Hosting</h3>
+                <p>Professional hosting for conferences, youth events, and faith gatherings.</p>
+            </div>
+
+            <div class="card">
+                <h3>Mentorship Program</h3>
+                <p>Customized 1-on-1 and group mentorship for emerging leaders.</p>
+            </div>
+
+        </div>
+
+        <button onclick="location.href='contact.html'">Book Now</button>
+    </div>
+
+    <!-- PARTNERSHIP -->
+    <div class="section">
+        <h2>Partner With the Vision</h2>
+        <p>
+            Your partnership helps us reach more lives, mentor more leaders,
+            expand outreach missions, and establish mentorship hubs in underserved communities.
+        </p>
+
+        <ul>
+            <li>One Time Giving</li>
+            <li>Monthly Partnership</li>
+            <li>Event Sponsorship</li>
+            <li>Strategic Collaboration</li>
+        </ul>
+
+        <button onclick="location.href='contact.html'">Become a Vision Partner</button>
+    </div>
+
+    <!-- FOOTER TICKER -->
+    <div class="ticker">
+        <div class="ticker-text">
+            SRM Buzz • Empowering Purpose • Mentoring Champions • Transforming Lives • Embu Scout Centre • Bookings Open
+            • Leadership Development • Faith in Action •
+        </div>
+    </div>
+    <script>
+        const toggle = document.getElementById("menu-toggle");
+        const links = document.getElementById("nav-links");
+
+        toggle.addEventListener("click", () => {
+            links.classList.toggle("active");
+        });
+    </script>
+</body>
+
+</html>
