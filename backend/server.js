@@ -18,13 +18,27 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Helper functions
 function readData(file) {
     const filePath = path.join(__dirname, "..", "data", file);
-
     if (!fs.existsSync(filePath)) {
-        fs.writeFileSync(filePath, "[]");
+        fs.writeFileSync(filePath, "[]", "utf8");
+    }
+    try {
+        let content = fs.readFileSync(filePath, "utf8");
+        // DEEP CLEANSING FOR ALL HIDDEN CHARACTERS (BOM, etc.)
+        content = content.replace(/[^\x20-\x7E\s\u00A0-\uFFFF]/g, ""); 
+        content = content.trim();
+        if(!content || content === "") content = "[]";
+        
+        const parsed = JSON.parse(content);
+        console.log("✅ DATA READY: " + file);
+        return parsed;
+    } catch (e) {
+        console.error("❌ CRITICAL REPAIR on " + file + ":", e.message);
+        return [];
     }
 
-    return JSON.parse(fs.readFileSync(filePath));
 }
+
+
 
 function writeData(file, data) {
     const filePath = path.join(__dirname, "..", "data", file);
@@ -48,17 +62,20 @@ const upload = multer({ storage: storage });
 
 /* =========================
    DEVOTIONAL ROUTES
-========================= */
-
-/* =========================
-   DEVOTIONAL ROUTES
-========================= */
-
+   ========================= */
 app.get("/api/devotionals", (req, res) => {
-    res.json(readData("devotionals.json"));
+    console.log("GET /api/devotionals hit");
+    try {
+        const data = readData("devotionals.json");
+        res.json(data);
+    } catch (e) {
+        console.error("Data Read Error:", e);
+        res.status(500).json({ error: "Storage error" });
+    }
 });
 
 app.post("/api/devotionals", (req, res) => {
+    console.log("POST /api/devotionals hit", req.body);
     const data = readData("devotionals.json");
 
     const newItem = {
@@ -147,9 +164,11 @@ app.post("/api/feedback", (req, res) => {
     writeData("feedback.json", data);
     res.json({ message: "Feedback saved" });
 });
+/* =========================
+   STORE & MERCH ROUTES
+========================= */
 app.post("/api/merchandise", upload.single("image"), (req, res) => {
     const data = readData("merchandise.json");
-
     const newItem = {
         id: Date.now(),
         name: req.body.name,
@@ -158,68 +177,98 @@ app.post("/api/merchandise", upload.single("image"), (req, res) => {
         imageUrl: "/uploads/" + req.file.filename,
         date: new Date().toISOString()
     };
-
     data.push(newItem);
     writeData("merchandise.json", data);
-
     res.json({ message: "Product added successfully" });
 });
+
 app.get("/api/merchandise", (req, res) => {
     res.json(readData("merchandise.json"));
 });
-app.delete("/api/merchandise/:id", (req, res) => {
-    const data = readData("merchandise.json");
-    const filtered = data.filter(item => item.id != req.params.id);
 
-    writeData("merchandise.json", filtered);
-
-    res.json({ message: "Product deleted" });
-});
-
-
-
+/* =========================
+   NEWS & STORIES ROUTES
+========================= */
 app.post("/api/news", upload.single("image"), (req, res) => {
     const data = readData("news.json");
-
     const newItem = {
         id: Date.now(),
         title: req.body.title,
         content: req.body.content,
         imageUrl: "/uploads/" + req.file.filename,
+        trending: req.body.trending === "true",
         date: new Date().toISOString()
     };
-
     data.push(newItem);
     writeData("news.json", data);
-
-    res.json({ message: "News posted successfully" });
-}); app.post("/api/news", upload.single("image"), (req, res) => {
-    const data = readData("news.json");
-
-    const newItem = {
-        id: Date.now(),
-        title: req.body.title,
-        content: req.body.content,
-        imageUrl: "/uploads/" + req.file.filename,
-        date: new Date().toISOString()
-    };
-
-    data.push(newItem);
-    writeData("news.json", data);
-
     res.json({ message: "News posted successfully" });
 });
+
 app.get("/api/news", (req, res) => {
     res.json(readData("news.json"));
 });
+
+/* =========================
+   EVENTS ROUTES
+========================= */
+app.post("/api/events", upload.single("image"), (req, res) => {
+    const data = readData("events.json");
+    const newItem = {
+        id: Date.now(),
+        title: req.body.title,
+        description: req.body.description,
+        dateString: req.body.dateString,
+        imageUrl: "/uploads/" + req.file.filename,
+        uploadedAt: new Date().toISOString()
+    };
+    data.push(newItem);
+    writeData("events.json", data);
+    res.json({ message: "Event saved successfully" });
+});
+
+app.get("/api/events", (req, res) => {
+    res.json(readData("events.json"));
+});
+
+/* =========================
+   DELETE ROUTES (MASTER)
+========================= */
+app.delete("/api/merchandise/:id", (req, res) => {
+    let data = readData("merchandise.json");
+    data = data.filter(item => item.id != req.params.id);
+    writeData("merchandise.json", data);
+    res.json({ message: "Product deleted" });
+});
+
 app.delete("/api/news/:id", (req, res) => {
-    const data = readData("news.json");
-    const filtered = data.filter(item => item.id != req.params.id);
-
-    writeData("news.json", filtered);
-
+    let data = readData("news.json");
+    data = data.filter(item => item.id != req.params.id);
+    writeData("news.json", data);
     res.json({ message: "News deleted" });
 });
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+
+app.delete("/api/gallery/:id", (req, res) => {
+    let data = readData("gallery.json");
+    data = data.filter(item => item.id != req.params.id);
+    writeData("gallery.json", data);
+    res.json({ message: "Gallery item deleted" });
 });
+
+app.delete("/api/events/:id", (req, res) => {
+    let data = readData("events.json");
+    data = data.filter(item => item.id != req.params.id);
+    writeData("events.json", data);
+    res.json({ message: "Event deleted" });
+});
+
+app.delete("/api/devotionals/:id", (req, res) => {
+    let data = readData("devotionals.json");
+    data = data.filter(item => item.id != req.params.id);
+    writeData("devotionals.json", data);
+    res.json({ message: "Devotional deleted" });
+});
+
+app.listen(PORT, () => {
+
+    console.log(`🚀 Master Server running on http://localhost:${PORT}`);
+});

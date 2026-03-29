@@ -1,0 +1,182 @@
+/* =======================================
+   SRM BUZZ PROFESSIONAL ADMIN DESIGN
+   ======================================= */
+:root {
+    --admin-bg: #0f172a;
+    --admin-sidebar: #1e293b;
+    --admin-accent: #FFD700;
+    --admin-text: #f8fafc;
+    --admin-card: #1e293b;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--admin-bg);
+    color: var(--admin-text);
+}
+
+.login-page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.login-card {
+    background: var(--admin-card);
+    padding: 50px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    text-align: center;
+}
+
+.login-card h2 {
+    font-size: 2.2rem;
+    color: var(--admin-accent);
+    margin-bottom: 30px;
+}
+
+.admin-input {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,215,0,0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.admin-input:focus {
+    border-color: var(--admin-accent);
+    outline: none;
+}
+
+.admin-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--admin-accent);
+    color: black;
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.admin-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+/* DASHBOARD LAYOUT */
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 280px;
+    background: var(--admin-sidebar);
+    padding: 40px 20px;
+    border-right: 1px solid rgba(255,215,0,0.1);
+}
+
+.sidebar h2 {
+    color: var(--admin-accent);
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-item {
+    padding: 15px 20px;
+    border-radius: 12px;
+    color: var(--admin-text);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--admin-accent);
+}
+
+.main-content {
+    flex: 1;
+    padding: 60px;
+    overflow-y: auto;
+}
+
+.dashboard-card {
+    background: var(--admin-card);
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+.dashboard-card h3 {
+    margin-top: 0;
+    color: var(--admin-accent);
+    margin-bottom: 20px;
+}
+
+.admin-input[type="file"] {
+    padding: 10px;
+    background: rgba(255, 215, 0, 0.05);
+    border: 2px dashed rgba(255, 215, 0, 0.2);
+    cursor: pointer;
+}
+
+.admin-input[type="file"]:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--admin-accent);
+}
+
+.file-label {
+    display: block;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #0f172a;
+    border: 2px dashed rgba(255,215,0,0.3);
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.file-label:hover {
+    border-color: var(--admin-accent);
+    background: rgba(255,215,0,0.05);
+}
+
+.admin-section h2 {
+    font-size: 2.5rem;
+    color: var(--admin-accent);
+    margin-bottom: 40px;
+}
+
+label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--admin-accent);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+

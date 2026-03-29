@@ -1,46 +1,135 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SRM Buzz</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/theme.js"></script>
+    <title>SRM | Soul Fuel Hub</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=fresh">
+    <style>
+        :root {
+            --parchment: #f4ecd8;
+            --prestige-gold: #FFD700;
+            --prestige-blue: #0f172a;
+        }
+        body { background: var(--prestige-blue); color: white; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        
+        .hero-banner { 
+            background: linear-gradient(135deg, #1e293b, #0f172a); 
+            padding: 100px 10%; 
+            text-align: center; 
+            border-bottom: 3px solid var(--prestige-gold);
+        }
+
+        /* 2-COLUMN SCROLL GRID */
+        .scroll-grid { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 60px 4%; 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 60px;
+            min-height: 100vh; 
+        }
+
+        .divine-scroll {
+            background: var(--parchment);
+            color: #2c1e11;
+            padding: 40px 50px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            border-left: 15px solid #d4c4a8;
+            border-right: 15px solid #d4c4a8;
+            border-radius: 5px;
+            min-height: 350px;
+            animation: scrollUnroll 1.2s ease-out;
+            border: 2px solid rgba(0,0,0,0.05);
+        }
+
+        /* Rolled Edges */
+        .divine-scroll::before, .divine-scroll::after {
+            content: ''; position: absolute; left: -20px; right: -20px; height: 30px; background: #c2b280; border-radius: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 2px solid #8b7355;
+        }
+        .divine-scroll::before { top: -15px; }
+        .divine-scroll::after { bottom: -15px; }
+
+        @keyframes scrollUnroll {
+            from { opacity: 0; transform: scaleY(0.1); }
+            to { opacity: 1; transform: scaleY(1); }
+        }
+
+        .fountain-pen { width: 50px; height: 50px; margin: 0 auto 20px auto; color: #1a1a1a; opacity: 0.8; }
+
+        .scroll-chapter { font-family: 'Playfair Display', serif; font-size: 1.8rem; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 15px; margin-bottom: 25px; text-align: center; font-weight: 800; color: #3e2723; }
+        .scroll-body { font-family: 'Playfair Display', serif; font-size: 1.1rem; line-height: 1.8; text-align: justify; white-space: pre-wrap; font-weight: 500; }
+        
+        .listen-btn { background: #3e2723; color: #f4ecd8; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 30px; width: 100%; }
+        .listen-btn:hover { background: #000; }
+    </style>
 </head>
-
 <body>
-
-    <nav class="navbar">
-        <div class="logo">
-            <img src="../images/logo.png" alt="SRM Buzz Logo">
+    <nav class="custom-navbar" style="background:var(--prestige-blue); border-bottom:1px solid rgba(255,215,0,0.2); position:relative; z-index:1001;">
+        <a href="/" class="nav-brand"><img src="/images/logo.png" alt="Logo" class="brand-img" style="height:60px;"></a>
+        <div class="nav-controls">
+            <button class="nav-toggle-btn" onclick="document.body.classList.toggle('dark-mode')">☀️</button>
+            <button class="nav-toggle-btn" onclick="document.getElementById('srm-nav-dropdown').classList.toggle('active')">☰</button>
         </div>
-        <div class="menu-toggle" id="menu-toggle">☰</div>
-        <ul>
-            <li><a href="/index.html">Home</a></li>
-            <li><a href="/pages/devotional.html">Devotional</a></li>
-            <li><a href="/pages/events.html">Events</a></li>
-            <li><a href="/pages/gallery.html">Gallery</a></li>
-            <li><a href="/pages/contact.html">Contact</a></li>
-            <button id="theme-toggle">🌙</button>
-        </ul>
+        <div class="srm-nav-dropdown-placeholder" id="srm-nav-dropdown">
+            <a href="/">Home</a><a href="/pages/gallery.html">Timeless Gallery</a><a href="/pages/merchandise.html">Official Store</a><a href="/pages/gossip.html">Campus Stories</a><a href="/pages/devotional.html">Soul Fuel</a><a href="/pages/events.html">Events Hub</a><a href="/pages/contact.html">Contact</a>
+        </div>
     </nav>
 
-    <section class="hero">
-        <h1>Daily Devotionals</h1>
-        <p>Be inspired. Be uplifted. Grow spiritually every day.</p>
+    <section class="hero-banner">
+        <h1 style="color:var(--prestige-gold); font-family:'Playfair Display', serif; font-size:4rem; margin-bottom:10px;">SOUL FUEL</h1>
+        <p style="opacity:0.6; letter-spacing:3px;">THE PRESTIGE REGISTER OF DIVINE WORDS</p>
     </section>
 
-    <div id="devotionalWall" class="content-container"></div>
+    <div class="scroll-grid" id="scrollWall">
+        <div style="grid-column: 1/-1; text-align:center; padding-top:100px;">
+            <p style="opacity:0.5; font-size:1.5rem;">📜 UNROLLING THE REGISTER...</p>
+        </div>
+    </div>
 
-    <script src="/js/devotional.js"></script>
-    const toggle = document.getElementById("menu-toggle");
-    const links = document.getElementById("nav-links");
+    <script>
+        async function loadScrolls() {
+            const wall = document.getElementById("scrollWall");
+            try {
+                const res = await fetch("/api/devotionals?v=" + Date.now());
+                const data = await res.json();
+                
+                if (!data || data.length === 0) {
+                    wall.innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:100px;'>THE SCROLLS ARE SILENT...</div>";
+                    return;
+                }
 
-    toggle.addEventListener("click", () => {
-    links.classList.toggle("active");
-    });
+                wall.innerHTML = data.slice().reverse().map((d, index) => `
+                    <div class="divine-scroll">
+                        <div class="fountain-pen">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-1.5M15.5 10.5l-3-3M13 8l-7-7-2 2 7 7M3 17l4 4-2 2-4-4 2-2z" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h2 class="scroll-chapter">${d.title}</h2>
+                        <div id="text-${index}" class="scroll-body">${d.content}</div>
+                        <button class="listen-btn" onclick="readScroll('${index}', this)">📜 LISTEN TO SCROLL</button>
+                    </div>
+                `).join("");
 
+            } catch (err) {
+                wall.innerHTML = "SYSTEM ERROR";
+            }
+        }
+
+        function readScroll(idx, btn) {
+            window.speechSynthesis.cancel();
+            const text = document.getElementById("text-"+idx).innerText;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.onstart = () => btn.innerText = "🎧 LISTENING...";
+            utter.onend = () => btn.innerText = "📜 LISTEN AGAIN";
+            window.speechSynthesis.speak(utter);
+        }
+
+        window.addEventListener('load', loadScrolls);
+    </script>
 </body>
-
 </html>

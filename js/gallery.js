@@ -12,21 +12,25 @@ function loadGallery() {
       // Newest first
       data.reverse().forEach((item, index) => {
         const card = document.createElement("div");
-        card.classList.add("gallery-card");
+        card.classList.add("polaroid-card");
+
+        // Add a slight stagger and fade
+        card.style.opacity = "0";
+        card.style.transitionDelay = `${index * 100}ms`;
 
         card.innerHTML = `
-          <img src="${item.imageUrl}" alt="${item.caption}">
-          <div class="gallery-info">
-            ${item.caption}
+          <div class="polaroid-img-container">
+            <img src="${item.imageUrl}" alt="${item.caption}">
           </div>
+          <p class="polaroid-caption">${item.caption || 'Live. Love. Purpose.'}</p>
         `;
 
         container.appendChild(card);
 
-        // Stagger fade animation
+        // Professional fade-in
         setTimeout(() => {
-          card.classList.add("show");
-        }, index * 80); // delay per image
+          card.style.opacity = "1";
+        }, 100);
       });
     })
     .catch(err => console.error("Gallery error:", err));

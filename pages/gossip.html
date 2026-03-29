@@ -4,35 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <title>SRM Buzz Updates</title>
-    <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="/js/theme.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/cart.js"></script>
+    <link rel="stylesheet" href="/css/style.css?v=1774600018436">
+    
+    <script>
+        function SRM_ToggleMenu() {
+            const dropdown = document.getElementById("srm-nav-dropdown");
+            if (dropdown) dropdown.classList.toggle("active");
+        }
+        function SRM_ToggleTheme() {
+            document.body.classList.toggle("dark-mode");
+            const btn = document.getElementById("theme-toggle");
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+                if (btn) btn.textContent = "☀️";
+            } else {
+                localStorage.setItem("theme", "light");
+                if (btn) btn.textContent = "🌙";
+            }
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-mode");
+                const btn = document.getElementById("theme-toggle");
+                if (btn) btn.textContent = "☀️";
+            }
+        });
+    </script>
 </head>
 
 <body>
-
-    <nav>
-        <div class="logo">
-            <div class="logo">
-                <img src="../images/logo.png" alt="SRM Buzz Logo">
-            </div>
-            <div class="menu-toggle" id="menu-toggle">☰</div>
-        </div>
-        <a href="/">Home</a>
-        <a href="/pages/gallery.html">Gallery</a>
-        <a href="/pages/merchandise.html">Merch</a>
-        <a href="/pages/gossip.html">SRM Buzz Updates</a>
-        <button id="theme-toggle">🌙</button>
-    </nav>
-
-    <h1>SRM Buzz Updates</h1>
-    <div class="hero">
-        <h1>SRM Buzz Updates</h1>
-        <p>Trending stories. Campus gossip. What’s hot right now.</p>
+<nav class="custom-navbar">
+    <a href="/" class="nav-brand">
+        <img src="/images/logo.png" alt="SRM Buzz Logo" class="brand-img">
+        
+    </a>
+    <div class="nav-controls">
+        <button id="theme-toggle" onclick="SRM_ToggleTheme()" class="nav-toggle-btn" style="font-size: 28px;">🌙</button>
+        <a href="/pages/cart.html" class="nav-cart">
+            <span style="font-size:1.2rem;">🛒</span> <span style="font-weight:600; margin-left:5px;" id="cart-count">0</span>
+        </a>
+        <button class="nav-toggle-btn" id="srm-menu-toggle" onclick="SRM_ToggleMenu()">☰</button>
     </div>
+    <div class="srm-nav-dropdown-placeholder" id="srm-nav-dropdown">
+        <a href="/">Home</a>
+        <a href="/pages/gallery.html">Timeless Moments</a>
+        <a href="/pages/merchandise.html">Official Store</a>
+        <a href="/pages/gossip.html">Campus Stories</a>
+        <a href="/pages/devotional.html">Soul Fuel</a>
+        <a href="/pages/events.html">Events Hub</a>
+        <a href="/pages/contact.html">Contact</a>
+    </div>
+</nav>
 
-    <div id="news-container" class="card-grid"></div>
+
+    
+
+    <section class="hero" style="background: linear-gradient(135deg, #1e293b, #7000ff);">
+        <h1 class="glitter-text">Campus Stories</h1>
+        <p>Serving you the absolute hottest tea ☕️Trending stories and life lessons from the heart of campus.</p>
+    </section>
+
+    <div id="news-container" class="card-grid" style="padding: 50px 5%;"></div>
 
 
     <script>
@@ -48,37 +83,43 @@
                 container.innerHTML = "";
 
                 if (data.length === 0) {
-                    container.innerHTML = "<p>No updates yet.</p>";
+                    container.innerHTML = "<p>The story archive is currently empty. Stay tuned for fresh tea!</p>";
                     return;
                 }
 
                 data.reverse().forEach(item => {
                     container.innerHTML += `
-        <div class="modern-card">
-          ${item.trending ? `<div class="badge">🔥 Trending</div>` : ""}
+        <div class="story-card">
+          ${item.trending ? `<div class="trending-glow">🔥 Hot Story</div>` : ""}
           <img src="${item.imageUrl}" alt="${item.title}">
-          <div class="modern-card-content">
-            <h3>${item.title}</h3>
-            <p>${item.content}</p>
-            <small>${new Date(item.date).toLocaleString("en-KE")}</small>
+          <div class="story-content">
+            <h3 class="story-title">${item.title}</h3>
+            <p class="story-text">${item.content}</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 15px; margin-top: 10px;">
+                <small style="font-weight: 600; font-family: 'Poppins'; opacity: 0.7;">${new Date(item.date).toLocaleDateString("en-KE")}</small>
+                <span style="font-size: 0.9rem; cursor: pointer; color: #7000ff; font-weight: 700;">Read More →</span>
+            </div>
           </div>
         </div>
       `;
                 });
 
             } catch (err) {
-                container.innerHTML = "<p>Error loading news.</p>";
+                container.innerHTML = "<p>Error loading stories. The tea is over-boiling!</p>";
             }
         }
-        const toggle = document.getElementById("menu-toggle");
-        const links = document.getElementById("nav-links");
-
-        toggle.addEventListener("click", () => {
-            links.classList.toggle("active");
-        });
+        
         loadNews();
     </script>
 
+
+    <!-- FOOTER TICKER (LOWER THIRD) -->
+    <div class="ticker">
+        <div class="ticker-text">
+            SRM Buzz • Empowering Purpose • Mentoring Champions • Transforming Lives • Embu Scout Centre • Bookings Open • Leadership Development • Faith in Action • 
+            SRM Buzz • Empowering Purpose • Mentoring Champions • Transforming Lives • Embu Scout Centre • Bookings Open • Leadership Development • Faith in Action •
+        </div>
+    </div>
 </body>
 
 </html>

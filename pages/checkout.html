@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Checkout</title>
+
+    <script src="/js/cart.js"></script>
+    
+    <link rel="stylesheet" href="/css/style.css?v=1774600018427">
+    
+    <script>
+        function SRM_ToggleMenu() {
+            const dropdown = document.getElementById("srm-nav-dropdown");
+            if (dropdown) dropdown.classList.toggle("active");
+        }
+        function SRM_ToggleTheme() {
+            document.body.classList.toggle("dark-mode");
+            const btn = document.getElementById("theme-toggle");
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+                if (btn) btn.textContent = "☀️";
+            } else {
+                localStorage.setItem("theme", "light");
+                if (btn) btn.textContent = "🌙";
+            }
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-mode");
+                const btn = document.getElementById("theme-toggle");
+                if (btn) btn.textContent = "☀️";
+            }
+        });
+    </script>
+</head>
+
+<body>
+<nav class="custom-navbar">
+    <a href="/" class="nav-brand">
+        <img src="/images/logo.png" alt="SRM Buzz Logo" class="brand-img">
+        
+    </a>
+    <div class="nav-controls">
+        <button id="theme-toggle" onclick="SRM_ToggleTheme()" class="nav-toggle-btn" style="font-size: 28px;">🌙</button>
+        <a href="/pages/cart.html" class="nav-cart">
+            <span style="font-size:1.2rem;">🛒</span> <span style="font-weight:600; margin-left:5px;" id="cart-count">0</span>
+        </a>
+        <button class="nav-toggle-btn" id="srm-menu-toggle" onclick="SRM_ToggleMenu()">☰</button>
+    </div>
+    <div class="srm-nav-dropdown-placeholder" id="srm-nav-dropdown">
+        <a href="/">Home</a>
+        <a href="/pages/gallery.html">Timeless Moments</a>
+        <a href="/pages/merchandise.html">Official Store</a>
+        <a href="/pages/gossip.html">Campus Stories</a>
+        <a href="/pages/devotional.html">Soul Fuel</a>
+        <a href="/pages/events.html">Events Hub</a>
+        <a href="/pages/contact.html">Contact</a>
+    </div>
+</nav>
+
+
+    <section class="contact-hero">
+        <h1 class="glitter-text">Order Confirmation</h1>
+        <p style="opacity: 0.9;">Secure your official SRM gear. Complete the payment to finalize your order.</p>
+    </section>
+
+    <div class="content-container" style="padding: 0 5% 100px; max-width: 600px; margin: 0 auto;">
+        
+        <div class="contact-card">
+            <h2 style="color: var(--accent-gold); margin-bottom: 20px; text-align: center;">M-Pesa Payment</h2>
+            <div style="text-align: center; background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px dashed var(--accent-gold); margin-bottom: 30px;">
+                <p style="margin-bottom: 10px; opacity: 0.7;">Send Payment To:</p>
+                <h1 style="font-size: 2.5rem; letter-spacing: 2px;">0722 290 106</h1>
+                <p style="font-weight: 700; color: var(--accent-gold); margin-top: 10px;">Pochi La Biashara</p>
+            </div>
+
+            <form id="checkoutForm" action="https://formsubmit.co/srmbuzzadmin@gmail.com" method="POST" onsubmit="attachCartData(); srm_submitForm(event, 'checkoutForm', '🚀 Payment details sent! We are verifying your M-Pesa transaction.')">
+                <!-- FormSubmit Config -->
+                <input type="hidden" name="_subject" value="SRM | NEW MERCH ORDER RECEIVED">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" id="cart-data-field" name="Order_Items" value="">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" class="form-input" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" class="form-input" placeholder="e.g. 07..." required>
+                </div>
+                <div class="form-group">
+                    <label>M-Pesa Transaction Code</label>
+                    <input type="text" name="transaction_code" class="form-input" placeholder="e.g. RGA1..." required style="text-transform: uppercase;">
+                </div>
+                
+                <button type="submit" class="admin-btn" style="width: 100%; padding: 20px; margin-top: 20px;">Confirm & Send Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function attachCartData() {
+            // Get cart from localStorage
+            const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+            let cartText = "";
+            let total = 0;
+
+            if (cartItems.length === 0) {
+                cartText = "No items in cart.";
+            } else {
+                cartItems.forEach(item => {
+                    cartText += `${item.name} (x${item.qty}) - KES ${item.price * item.qty}\n`;
+                    total += item.price * item.qty;
+                });
+                cartText += `\nTOTAL REVENUE: KES ${total}`;
+            }
+
+            document.getElementById("cart-data-field").value = cartText;
+            
+            // Clear cart after successful sub (FormSubmit handles the redirect)
+            // But we can't clear it yet, we just send it.
+        }
+    </script>
+
+
+
+    <!-- FOOTER TICKER (LOWER THIRD) -->
+    <div class="ticker">
+        <div class="ticker-text">
+            SRM Buzz • Empowering Purpose • Mentoring Champions • Transforming Lives • Embu Scout Centre • Bookings Open • Leadership Development • Faith in Action • 
+            SRM Buzz • Empowering Purpose • Mentoring Champions • Transforming Lives • Embu Scout Centre • Bookings Open • Leadership Development • Faith in Action •
+        </div>
+    </div>
+</body>
+
+</html>

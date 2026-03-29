@@ -1,21 +1,45 @@
-const container = document.getElementById("eventsContainer");
+document.addEventListener("DOMContentLoaded", () => {
+    loadEvents();
+});
 
 async function loadEvents() {
-  const res = await fetch("/api/events");
-  const data = await res.json();
+    const container = document.getElementById("eventsContainer");
+    container.innerHTML = `<div class="spinner"></div>`;
 
-  if (data.length === 0) {
-    container.innerHTML = "<p>No events yet.</p>";
-    return;
-  }
+    try {
+        const res = await fetch("/api/events");
+        const data = await res.json();
 
-  container.innerHTML = data.reverse().map(event => `
-    <div class="card">
-      <h3>${event.title}</h3>
-      <p><strong>Date:</strong> ${event.date}</p>
-      <p>${event.description}</p>
-    </div>
-  `).join("");
+        container.innerHTML = "";
+
+        if (data.length === 0) {
+            container.innerHTML = "<p style='text-align:center; grid-column: 1/-1;'>No upcoming events at the moment. Stay tuned!</p>";
+            return;
+        }
+
+        // Show newest events first
+        data.reverse().forEach(event => {
+            container.innerHTML += `
+                <div class="event-poster">
+                    <div class="vintage-overlay"></div>
+                    <div class="event-date-badge">
+                        ${event.dateString.split(",")[0]}<br>
+                        <span style="font-size: 0.7rem;">${event.dateString.split(",")[1] || 2024}</span>
+                    </div>
+                    <img src="${event.imageUrl}" alt="${event.title}" class="event-img">
+                    <div class="event-info">
+                        <h2 class="event-title">${event.title}</h2>
+                        <p class="event-desc">${event.description || 'Join us for an unforgettable purpose-driven gathering.'}</p>
+                        <button class="nav-toggle-btn" style="width: 100%; padding: 12px; border: 2px solid var(--accent-gold); color: var(--accent-gold); background: transparent;">
+                             View Details
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Error loading events:", err);
+        container.innerHTML = "<p>Error loading events hub. Please try again.</p>";
+    }
 }
-
-loadEvents();

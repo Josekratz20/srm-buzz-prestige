@@ -1,19 +1,53 @@
-<input id="email" placeholder="Admin Email">
-<input id="password" type="password" placeholder="Password">
-<button id="loginBtn">Login</button>
+<!DOCTYPE html>
+<html lang="en">
 
-<script type="module">
-    import { auth } from "../js/firebase.js";
-    import { signInWithEmailAndPassword } from
-        "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+<head>
+    <meta charset="UTF-8">
+    <title>SRM | Admin Secure Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-    document.getElementById("loginBtn").onclick = () => {
-        signInWithEmailAndPassword(
-            auth,
-            email.value,
-            password.value
-        ).then(() => {
-            window.location.href = "admin.html";
-        }).catch(err => alert(err.message));
-    };
-</script>
+<body class="login-page">
+    <div class="login-card">
+        <img src="/images/logo.png" alt="SRM Logo" style="width: 150px; margin-bottom: 20px;">
+        <h2>Admin Management Portal</h2>
+        <p style="opacity: 0.7; margin-bottom: 30px;">Authorized Access Only</p>
+        
+        <input id="email" class="admin-input" placeholder="Admin Email" type="email">
+        <input id="password" class="admin-input" placeholder="Security Password" type="password">
+        <button id="loginBtn" class="admin-btn">Generate Access Session</button>
+        
+        <p id="errorMsg" style="color: #ff4444; margin-top: 20px; font-weight: 600;"></p>
+    </div>
+
+    <script>
+        document.getElementById("loginBtn").onclick = () => {
+            const errorMsgEl = document.getElementById("errorMsg");
+            const btn = document.getElementById("loginBtn");
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            
+            btn.innerText = "Verifying Identity...";
+            errorMsgEl.innerText = "";
+            
+            // MASTER ADMIN CREDENTIALS
+            const MASTER_EMAIL = "admin@srm.org";
+            const MASTER_PASS = "srm_master_2024";
+
+            setTimeout(() => {
+                if (email === MASTER_EMAIL && password === MASTER_PASS) {
+                    sessionStorage.setItem("adminUser", "authorized_master");
+                    window.location.href = "index.html";
+                } else {
+                    btn.innerText = "Retry Access Session";
+                    errorMsgEl.innerText = "❌ Unauthorized: Invalid Security Credentials";
+                }
+            }, 1000); // Simulate secure check
+        };
+    </script>
+</body>
+
+</html>
+
