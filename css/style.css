@@ -291,7 +291,7 @@ body {
     line-height: 1.6;
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
     overflow-x: hidden;
-    padding-top: 70px; /* Space for fixed navbar */
+    padding-top: 125px; /* Space for larger fixed navbar */
     padding-bottom: 50px; /* Space for fixed ticker (lower third) */
 }
 
@@ -304,7 +304,7 @@ body {
     justify-content: space-between;
     align-items: center;
     background: var(--theme-nav) !important;
-    padding: 12px 5%;
+    padding: 15px 5%;
     position: fixed;
     top: 0;
     left: 0;
@@ -322,9 +322,9 @@ body {
 }
 
 .brand-img {
-    height: 48px;
+    height: 80px;
     width: auto;
-    max-width: 260px;
+    max-width: 320px;
     object-fit: contain;
 }
 
