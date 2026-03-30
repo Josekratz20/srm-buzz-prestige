@@ -11,170 +11,189 @@
 }
 
 /* =======================================
-   PRESTIGE CHANNEL IDENTITY (REBRAND)
+   BRIGHT & FASHIONABLE PRESTIGE UI
    ======================================= */
-.channel-header {
-    background: #000;
+.prestige-hero {
+    min-height: 85vh;
+    background: radial-gradient(circle at top right, #1e293b 0%, #020617 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     position: relative;
-    padding-bottom: 50px;
+    padding: 100px 5%;
 }
 
-.channel-banner {
-    height: 350px;
-    background: url('/images/banner_inspire.jpg') no-repeat center center;
-    background-size: cover;
-    position: relative;
-    border-bottom: 3px solid #FFD700;
-}
-
-.channel-banner::after {
-    content: '';
+.hero-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.4);
+    background: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
+    opacity: 0.05;
 }
 
-.channel-info-container {
-    max-width: 1300px;
-    margin: -100px auto 0;
-    padding: 0 5%;
-    display: flex;
-    align-items: flex-end;
-    gap: 40px;
-    position: relative;
-    z-index: 10;
-}
-
-.channel-profile {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 5px solid #fff;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    background: #000;
-}
-
-.channel-profile img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.channel-text {
-    padding-bottom: 30px;
-    color: #fff;
-}
-
-.channel-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
-    margin: 0;
-    font-weight: 800;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-}
-
-.channel-handle {
-    font-size: 1.1rem;
-    opacity: 0.8;
-    margin: 10px 0;
-    font-weight: 600;
-    color: #FFD700;
-}
-
-.channel-bio {
-    max-width: 600px;
-    line-height: 1.6;
-    opacity: 0.9;
-    margin-bottom: 25px;
-}
-
-.channel-actions {
-    display: flex;
-    gap: 15px;
-}
-
-.prestige-btn {
-    background: #FFD700;
-    color: #000;
-    padding: 12px 30px;
+.prestige-badge {
+    display: inline-block;
+    padding: 8px 15px;
+    border: 1px solid var(--accent-gold);
+    color: var(--accent-gold);
     border-radius: 50px;
-    text-decoration: none;
-    font-weight: 800;
-    font-size: 1rem;
-    transition: 0.3s;
-    border: 2px solid #FFD700;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
 }
 
-.prestige-btn.outline {
-    background: transparent;
+.scouter-name {
+    font-size: clamp(3rem, 10vw, 5.5rem);
     color: #fff;
-    border-color: rgba(255,255,255,0.4);
+    line-height: 1;
+    margin-bottom: 20px;
+    font-weight: 800;
 }
 
-.prestige-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255,215,0,0.4);
+.scouter-tagline {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.7);
+    max-width: 800px;
+    margin: 0 auto 40px;
+    letter-spacing: 1px;
 }
 
-/* MAIN GRID */
-.prestige-main {
-    max-width: 1300px;
-    margin: 60px auto;
-    padding: 0 5%;
-}
-
-.section-title-wrap {
-    text-align: center;
+.hero-highlights {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
     margin-bottom: 50px;
 }
 
-.prestige-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.grid-card {
-    background: #1e293b;
-    padding: 50px 30px;
-    border-radius: 20px;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,0.05);
-    transition: 0.4s;
-    text-decoration: none;
+.stat-pill {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 25px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
     color: #fff;
 }
 
-.grid-card:hover {
-    background: #232d4b;
-    transform: translateY(-10px);
-    border-color: #FFD700;
+.gold-text { color: var(--accent-gold); margin-right: 8px; }
+
+.hero-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
 }
 
-.card-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
+.crown-btn {
+    padding: 20px 45px;
+    background: var(--accent-gold);
+    color: #000;
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: 0.4s;
+    border: 2px solid var(--accent-gold);
 }
+
+.crown-btn.outline {
+    background: transparent;
+    color: #fff;
+}
+
+.crown-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255,215,0,0.5);
+}
+
+/* REDUCED BRIGHTNESS / ANTIQUE REFINEMENT */
+.prestige-white-section {
+    background: #fdf6e3; /* Sophisticated Champagne / Antique Linen */
+    padding: 120px 5%;
+    position: relative;
+    color: #020617;
+    background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png'); /* Subtle Stationery Texture */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-badge {
+    color: #b45309; /* Deep Gold / Bronze */
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dark-text {
+    text-align: center;
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+    font-weight: 900;
+    color: #020617;
+}
+
+.section-description {
+    text-align: center;
+    max-width: 850px;
+    margin: 0 auto 80px;
+    font-size: 1.3rem;
+    line-height: 1.9;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+/* ANTIQUE CARDS */
+.modern-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.modern-card {
+    padding: 60px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.5s;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.card-blue { background: #0f172a; }
+.card-gold { background: #92400e; } /* Deeper, richer gold */
+.card-dark { background: #020617; }
+
+.modern-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+}
+
+.card-icon { font-size: 3.5rem; margin-bottom: 30px; }
+.modern-card h3 { font-size: 1.8rem; margin-bottom: 15px; font-weight: 800; color: #fff; }
+.modern-card p { opacity: 0.9; margin-bottom: 30px; line-height: 1.6; flex-grow: 1; color: #f8fafc; }
+.card-link { font-weight: 800; color: #FFD700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
 
 @media (max-width: 768px) {
-    .channel-info-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin-top: -60px;
-    }
-    .channel-profile {
-        width: 150px;
-        height: 150px;
-    }
-    .channel-name {
-        font-size: 2.2rem;
-    }
-    .channel-actions {
-        justify-content: center;
-    }
+    .scouter-name { font-size: 3rem; }
+    .hero-actions { flex-direction: column; }
+    .crown-btn { width: 100%; }
+    .dark-text { font-size: 2.2rem; }
 }
+
 
 
     /* =======================================
