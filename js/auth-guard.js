@@ -4,12 +4,13 @@
  * can view premium content (Everything except Home).
  */
 (function() {
-    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+    const protectedPages = ['checkout.html', 'contact.html', 'cart.html'];
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
     const isAuthPage = window.location.pathname.includes('auth.html');
     const user = localStorage.getItem('srmUserToken');
 
-    if (!isHomePage && !isAuthPage && !user) {
-        // Redirect to Login/Signup if trying to access any Page
+    // ONLY lock Payment (checkout), Feedback (contact), and Booking (events/checkout)
+    if (protectedPages.includes(currentPath) && !isAuthPage && !user) {
         window.location.href = '/pages/auth.html?redirect=' + encodeURIComponent(window.location.pathname);
     }
 })();

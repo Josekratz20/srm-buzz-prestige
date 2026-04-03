@@ -209,7 +209,11 @@
             </div>
             <div id="kababa-messages">
                 <div class="k-msg k-bot">
-                    Hello there! I am KABABA, your friendly guide here at SRM Buzz. Are you new or returning? How can I help you navigate the Prestige Era today?
+                    Hello thereScouter! I am KABABA, your animated guide! Are you ready to dive into the Prestige Era? 🗿✨
+                </div>
+                <div style="padding: 10px; text-align: center;">
+                    <button onclick="explainSRM()" style="background: var(--accent-gold); color: black; border: none; padding: 10px 15px; border-radius: 20px; font-weight: 800; cursor: pointer; border: 2px solid rgba(0,0,0,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.2);">🔊 Explain SRM BUZZ</button>
+                    <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 8px;">(I will speak to you in English!)</p>
                 </div>
             </div>
             <div class="kababa-input">
@@ -226,10 +230,35 @@
         function toggleKababa() {
             const win = document.getElementById('kababa-chat-window');
             win.classList.toggle('hidden');
+            if(!win.classList.contains('hidden')) kababaJump();
         }
 
-        function handleKababaEnter(e) {
-            if (e.key === 'Enter') sendKababaMsg();
+        function kababaJump() {
+            const trigger = document.getElementById('kababa-trigger');
+            trigger.classList.add('kababa-jump');
+            setTimeout(() => trigger.classList.remove('kababa-jump'), 600);
+        }
+
+        function kababaSpeak(text) {
+            if ('speechSynthesis' in window) {
+                const trigger = document.getElementById('kababa-trigger');
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.rate = 1.0;
+                utter.pitch = 0.8; // Masculine fat guy vibe
+                
+                trigger.classList.add('kababa-talk');
+                utter.onend = () => trigger.classList.remove('kababa-talk');
+                window.speechSynthesis.speak(utter);
+            }
+        }
+
+        function explainSRM() {
+            const text = "Welcome to SRM BUZZ! I am Kababa. We are a prestige mentorship platform dedicated to empowering your purpose. Whether you are looking for official scout merchandise, divine fuel for your soul, or the latest buzz vibez from across the campus, we are here to guide you. Join our sanctuary today to unlock the full era!";
+            const msgs = document.getElementById('kababa-messages');
+            msgs.innerHTML += `<div class="k-msg k-bot">🗿 <strong>KABABA is explaining...</strong><br>${text}</div>`;
+            msgs.scrollTop = msgs.scrollHeight;
+            kababaSpeak(text);
+            kababaJump();
         }
 
         function sendKababaMsg() {
@@ -237,14 +266,12 @@
             const text = input.value.trim();
             if(!text) return;
             
+            kababaJump();
             const msgs = document.getElementById('kababa-messages');
-            
-            // User message
             msgs.innerHTML += `<div class="k-msg k-user">${text}</div>`;
             input.value = '';
             msgs.scrollTop = msgs.scrollHeight;
 
-            // Simple bot reply
             setTimeout(() => {
                 const reply = getKababaReply(text.toLowerCase());
                 msgs.innerHTML += `<div class="k-msg k-bot">${reply}</div>`;
