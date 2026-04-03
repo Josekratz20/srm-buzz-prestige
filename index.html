@@ -51,7 +51,7 @@
             <a href="/">Home</a>
             <a href="/pages/gallery.html">Timeless Gallery</a>
             <a href="/pages/merchandise.html">Official Store</a>
-            <a href="/pages/gossip.html">Campus Stories</a>
+            <a href="/pages/gossip.html">Buzz Vibez</a>
             <a href="/pages/devotional.html">Soul Fuel</a>
             <a href="/pages/events.html">Events Hub</a>
             <a href="/pages/contact.html">Contact</a>
@@ -63,7 +63,11 @@
         <div class="hero-overlay"></div>
         <div class="hero-content pop-reveal">
             <div class="prestige-badge">PRESTIGE ERA ORIGINALS</div>
-            <h1 class="scouter-name serif-title">Pastor Erick Masaba</h1>
+            <h1 class="scouter-name serif-title srm-animated-title">
+                <span class="srm-letter">S</span>
+                <span class="srm-letter">R</span>
+                <span class="srm-letter">M</span>
+            </h1>
             <p class="scouter-tagline">Empowering Purpose • Mentoring Champions • Transforming Lives</p>
             <div class="hero-highlights">
                 <div class="stat-pill"><span class="gold-text">1.2K+</span> SUBSCRIBERS</div>
@@ -93,8 +97,8 @@
                 </a>
                 <a href="/pages/gossip.html" class="modern-card card-gold">
                     <div class="card-icon">✨</div>
-                    <h3>Campus Stories</h3>
-                    <p>Hottest tea, trending stories, and timeless life lessons.</p>
+                    <h3>Buzz Vibez</h3>
+                    <p>Keeping you up to date with scouting matters on campus and other stories.</p>
                     <span class="card-link">Read Now →</span>
                 </a>
                 <a href="/pages/merchandise.html" class="modern-card card-dark">
@@ -180,6 +184,72 @@
         document.querySelectorAll('.pop-reveal').forEach(el => observer.observe(el));
     </script>
 
-</body>
+    <!-- KABABA CHATBOT -->
+    <div id="kababa-chatbot">
+        <div id="kababa-chat-window" class="hidden">
+            <div class="kababa-header">
+                <img src="/images/kababa.png" alt="Kababa" class="kababa-avatar-small">
+                <span>Chat with KABABA</span>
+                <button onclick="toggleKababa()" class="kababa-close">×</button>
+            </div>
+            <div id="kababa-messages">
+                <div class="k-msg k-bot">
+                    Hello there! I am KABABA, your friendly guide here at SRM Buzz. Are you new or returning? How can I help you navigate the Prestige Era today?
+                </div>
+            </div>
+            <div class="kababa-input">
+                <input type="text" id="k-input" placeholder="Type a message..." onkeypress="handleKababaEnter(event)">
+                <button onclick="sendKababaMsg()">➤</button>
+            </div>
+        </div>
+        <button id="kababa-trigger" onclick="toggleKababa()">
+            <img src="/images/kababa.png" alt="Kababa Avatar">
+        </button>
+    </div>
 
+    <script>
+        function toggleKababa() {
+            const win = document.getElementById('kababa-chat-window');
+            win.classList.toggle('hidden');
+        }
+
+        function handleKababaEnter(e) {
+            if (e.key === 'Enter') sendKababaMsg();
+        }
+
+        function sendKababaMsg() {
+            const input = document.getElementById('k-input');
+            const text = input.value.trim();
+            if(!text) return;
+            
+            const msgs = document.getElementById('kababa-messages');
+            
+            // User message
+            msgs.innerHTML += `<div class="k-msg k-user">${text}</div>`;
+            input.value = '';
+            msgs.scrollTop = msgs.scrollHeight;
+
+            // Simple bot reply
+            setTimeout(() => {
+                const reply = getKababaReply(text.toLowerCase());
+                msgs.innerHTML += `<div class="k-msg k-bot">${reply}</div>`;
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 800);
+        }
+
+        function getKababaReply(text) {
+            if(text.includes('soul fuel') || text.includes('scrolls') || text.includes('devotional')) {
+                return "Ah, the Soul Fuel! That's where you find the Ancient Scrolls. Go to the menu and click on 'Soul Fuel' to start listening.";
+            } else if(text.includes('store') || text.includes('merch') || text.includes('buy')) {
+                return "Looking good in SRM gear is a lifestyle! Let me point you to the 'Official Store' in the navigation menu.";
+            } else if(text.includes('hello') || text.includes('hi')) {
+                return "Habari! Welcome to SRM Buzz. Feel free to explore our stories, store, and events.";
+            } else if(text.includes('vibez') || text.includes('story')) {
+                return "For the latest updates and scouting matters, check out Buzz Vibez! It's always fresh.";
+            } else {
+                return "Interesting! As KABABA, I'm here to ensure you feel at home. Check our menu for the Gallery, Store, Soul Fuel, and Events hub!";
+            }
+        }
+    </script>
+</body>
 </html>

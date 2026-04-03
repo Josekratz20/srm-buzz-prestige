@@ -75,7 +75,7 @@
             <button class="nav-toggle-btn" onclick="document.getElementById('srm-nav-dropdown').classList.toggle('active')">☰</button>
         </div>
         <div class="srm-nav-dropdown-placeholder" id="srm-nav-dropdown">
-            <a href="/">Home</a><a href="/pages/gallery.html">Timeless Gallery</a><a href="/pages/merchandise.html">Official Store</a><a href="/pages/gossip.html">Campus Stories</a><a href="/pages/devotional.html">Soul Fuel</a><a href="/pages/events.html">Events Hub</a><a href="/pages/contact.html">Contact</a>
+            <a href="/">Home</a><a href="/pages/gallery.html">Timeless Gallery</a><a href="/pages/merchandise.html">Official Store</a><a href="/pages/gossip.html">Buzz Vibez</a><a href="/pages/devotional.html">Soul Fuel</a><a href="/pages/events.html">Events Hub</a><a href="/pages/contact.html">Contact</a>
         </div>
     </nav>
 
@@ -111,7 +111,10 @@
                         </div>
                         <h2 class="scroll-chapter">${d.title}</h2>
                         <div id="text-${index}" class="scroll-body">${d.content}</div>
-                        <button class="listen-btn" onclick="readScroll('${index}', this)">📜 LISTEN TO SCROLL</button>
+                        <div style="display:flex; gap:10px;">
+                            <button class="listen-btn" id="btn-play-${index}" onclick="togglePlay('${index}')">📜 LISTEN TO SCROLL</button>
+                            <button class="listen-btn" style="background:#8b0000; display:none;" id="btn-stop-${index}" onclick="stopAudio('${index}')">⏹ QUICK STOP</button>
+                        </div>
                     </div>
                 `).join("");
 
@@ -120,13 +123,52 @@
             }
         }
 
-        function readScroll(idx, btn) {
+        let currentUtterance = null;
+        let playingIndex = null;
+
+        function togglePlay(idx) {
+            const btnPlay = document.getElementById("btn-play-"+idx);
+            const btnStop = document.getElementById("btn-stop-"+idx);
+
+            // If a different scroll is playing, stop it first
+            if (playingIndex !== null && playingIndex !== idx) {
+                stopAudio(playingIndex);
+            }
+
+            if (window.speechSynthesis.speaking && playingIndex === idx) {
+                if (window.speechSynthesis.paused) {
+                    window.speechSynthesis.resume();
+                    btnPlay.innerText = "⏸ PAUSE AUDIO";
+                } else {
+                    window.speechSynthesis.pause();
+                    btnPlay.innerText = "▶ RESUME AUDIO";
+                }
+            } else {
+                window.speechSynthesis.cancel();
+                const text = document.getElementById("text-"+idx).innerText;
+                currentUtterance = new SpeechSynthesisUtterance(text);
+                
+                currentUtterance.onstart = () => {
+                    playingIndex = idx;
+                    btnPlay.innerText = "⏸ PAUSE AUDIO";
+                    btnStop.style.display = "block";
+                };
+                
+                currentUtterance.onend = () => {
+                    playingIndex = null;
+                    btnPlay.innerText = "📜 LISTEN TO SCROLL";
+                    btnStop.style.display = "none";
+                };
+
+                window.speechSynthesis.speak(currentUtterance);
+            }
+        }
+
+        function stopAudio(idx) {
             window.speechSynthesis.cancel();
-            const text = document.getElementById("text-"+idx).innerText;
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.onstart = () => btn.innerText = "🎧 LISTENING...";
-            utter.onend = () => btn.innerText = "📜 LISTEN AGAIN";
-            window.speechSynthesis.speak(utter);
+            playingIndex = null;
+            document.getElementById("btn-play-"+idx).innerText = "📜 LISTEN TO SCROLL";
+            document.getElementById("btn-stop-"+idx).style.display = "none";
         }
 
         window.addEventListener('load', loadScrolls);
