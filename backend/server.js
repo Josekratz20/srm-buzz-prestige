@@ -15,6 +15,16 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Serve frontend from root
 app.use(express.static(path.join(__dirname, "..")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// DATABASE INITIALIZATION (Self-Healing)
+const dbFiles = ['devotionals.json', 'gallery.json', 'events.json', 'feedback.json', 'merchandise.json', 'news.json', 'sales.json'];
+const dataDir = path.join(__dirname, '..', 'data');
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
+dbFiles.forEach(file => {
+    const fPath = path.join(dataDir, file);
+    if (!fs.existsSync(fPath)) fs.writeFileSync(fPath, "[]", "utf8");
+});
+
 // Helper functions
 function readData(file) {
     const filePath = path.join(__dirname, "..", "data", file);
@@ -266,6 +276,19 @@ app.delete("/api/devotionals/:id", (req, res) => {
     data = data.filter(item => item.id != req.params.id);
     writeData("devotionals.json", data);
     res.json({ message: "Devotional deleted" });
+});
+
+/* =========================
+   AUTHENTICATION ROUTES
+========================= */
+app.post("/api/admin/login", (req, res) => {
+    const { password } = req.body;
+    // MASTER PASSWORD: You can change this to anything!
+    if (password === "PRESTIGE2026") {
+        res.json({ success: true, token: "MASTER_ADMIN_TOKEN_" + Date.now() });
+    } else {
+        res.status(401).json({ success: false, message: "❌ UNAUTHORIZED ACCESS" });
+    }
 });
 
 /* =========================

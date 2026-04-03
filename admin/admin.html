@@ -129,17 +129,83 @@
             </div>
             <div id="manage-sales-list"></div>
         </section>
+    <main class="main-content" id="master-admin-root" style="display:none;">
+        <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+            <h1 id="section-title">Dashboard Overview</h1>
+            <div>
+                <button onclick="refreshActiveList()" style="background:var(--admin-accent); color:black; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">🔄 REFRESH DATA</button>
+                <button onclick="adminLogout()" style="background:#ef4444; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; margin-left:10px;">🔒 LOGOUT</button>
+            </div>
+        </header>
+
+        <div id="alert-box" style="margin-bottom: 20px;"></div>
+        <!-- Sections hidden... -->
     </main>
 
+    <!-- ADMIN LOGIN OVERLAY -->
+    <div id="login-overlay" style="position:fixed; inset:0; background:var(--admin-bg); z-index:100000; display:flex; align-items:center; justify-content:center;">
+        <div class="dashboard-card" style="width:100%; max-width:400px; text-align:center;">
+            <h1 style="color:var(--admin-accent); margin-bottom:20px;">MASTER ADMIN</h1>
+            <p style="opacity:0.6; margin-bottom:30px;">Enter the SRM Prestige Era password to unlock the register.</p>
+            <input type="password" id="admin-pass" class="admin-input" placeholder="Enter Secret Code" onkeypress="if(event.key==='Enter') tryAdminLogin()">
+            <button onclick="tryAdminLogin()" class="admin-btn">UNLOCK REGISTER 🔓</button>
+            <p id="login-error" style="color:#ef4444; margin-top:20px; display:none;"></p>
+        </div>
+    </div>
+
     <script>
+        function checkAuth() {
+            if (sessionStorage.getItem('masterToken')) {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('master-admin-root').style.display = 'block';
+                document.querySelector('.sidebar').style.display = 'block';
+            } else {
+                document.getElementById('login-overlay').style.display = 'flex';
+                document.getElementById('master-admin-root').style.display = 'none';
+                document.querySelector('.sidebar').style.display = 'none';
+            }
+        }
+
+        async function tryAdminLogin() {
+            const pass = document.getElementById('admin-pass').value;
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pass })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    sessionStorage.setItem('masterToken', data.token);
+                    checkAuth();
+                } else {
+                    const err = document.getElementById('login-error');
+                    err.innerText = data.message;
+                    err.style.display = 'block';
+                }
+            } catch (e) {
+                alert("Connection failed.");
+            }
+        }
+
+        function adminLogout() {
+            sessionStorage.removeItem('masterToken');
+            location.reload();
+        }
+
+        // Run check on load
+        window.onload = checkAuth;
+
         let currentSection = 'overview';
+        
         function showSection(id, btn) {
             currentSection = id;
             document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).style.display = 'block';
+            const sec = document.getElementById(id);
+            if(sec) sec.style.display = 'block';
             if(btn) btn.classList.add('active');
-            document.getElementById('section-title').innerText = btn ? btn.innerText : 'Dashboard';
+            document.getElementById('section-title').innerText = btn ? btn.innerText.replace(/[^\w\s]/gi, '') : 'Dashboard';
             if(['store','stories','gallery','events','fuel','sales'].includes(id)) loadManageList(id);
         }
 
@@ -186,6 +252,8 @@
         async function loadManageList(section) {
             const listEl = document.getElementById(`manage-${section}-list`);
             const endpoints = { 'store':'/api/merchandise', 'stories':'/api/news', 'gallery':'/api/gallery', 'events':'/api/events', 'fuel':'/api/devotionals', 'sales':'/api/sales' };
+            if(!listEl) return;
+            
             listEl.innerHTML = "<p>Scanning register...</p>";
             try {
                 const res = await fetch(endpoints[section] + "?v=" + Date.now());
@@ -193,19 +261,19 @@
                 listEl.innerHTML = "";
                 data.forEach(item => {
                     const div = document.createElement('div');
-                    
                     if (section === 'sales') {
                         div.className = 'dashboard-card';
+                        div.style.background = '#020617';
                         div.innerHTML = `
                             <div style="display: flex; justify-content: space-between; align-items: start;">
                                 <div>
                                     <h3 style="color:var(--admin-accent);">📦 ORDER #${item.id}</h3>
                                     <p style="margin: 10px 0;"><strong>CUSTOMER:</strong> ${item.name} | ${item.phone}</p>
-                                    <p style="white-space: pre-wrap; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace;">${item.Order_Items}</p>
-                                    <p><strong>TRANSACTION CODE:</strong> <span style="color: #4ade80; font-weight: bold;">${item.transaction_code}</span></p>
-                                    <p style="opacity: 0.5; font-size: 0.8rem; margin-top: 10px;">${new Date(item.date).toLocaleString()}</p>
+                                    <p style="white-space: pre-wrap; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0; font-family: monospace; border: 1px solid rgba(255,255,255,0.1);">${item.Order_Items}</p>
+                                    <p><strong>TRANSACTION CODE:</strong> <span style="color: #4ade80; font-weight: bold; border: 1px solid #4ade80; padding: 2px 8px; border-radius: 5px;">${item.transaction_code}</span></p>
+                                    <p style="opacity: 0.5; font-size: 0.8rem; margin-top: 15px;">Recorded: ${new Date(item.date).toLocaleString()}</p>
                                 </div>
-                                <button onclick="deleteItem('/api/sales', '${item.id}', 'sales')" style="background:#dc2626; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight: bold;">DELETE RECORD</button>
+                                <button onclick="deleteItem('/api/sales', '${item.id}', 'sales')" style="background:#dc2626; color:white; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight: bold;">DELETE RECORD</button>
                             </div>
                         `;
                     } else {
@@ -215,20 +283,21 @@
                     }
                     listEl.appendChild(div);
                 });
-                if(data.length === 0) listEl.innerHTML = "<p style='opacity:0.5;'>No items found.</p>";
+                if(data.length === 0) listEl.innerHTML = "<p style='opacity:0.5;'>No items found in register.</p>";
             } catch (e) { listEl.innerHTML = "Error loading list."; }
         }
 
         async function deleteItem(endpoint, id, section) {
-            if(!confirm("Permanently delete this?")) return;
+            if(!confirm("Permanently delete this from the register?")) return;
             const res = await fetch(`${endpoint}/${id}`, { method: 'DELETE' });
-            if(res.ok) { showAlert("🗑️ Removed."); loadManageList(section); }
+            if(res.ok) { showAlert("🗑️ Removed successfully."); loadManageList(section); }
         }
 
         function refreshActiveList() { if(['store','stories','gallery','events','fuel','sales'].includes(currentSection)) loadManageList(currentSection); }
         function showAlert(msg, isError = false) {
             const box = document.getElementById('alert-box');
-            box.innerHTML = `<div style="padding:15px; border-radius:10px; background:${isError?'#7f1d1d':'#065f46'}; color:white;">${msg}</div>`;
+            box.innerHTML = `<div style="padding:15px; border-radius:10px; background:${isError?'#7f1d1d':'#065f46'}; color:white; font-weight:bold; border: 1px solid rgba(255,255,255,0.1);">${msg}</div>`;
+            box.scrollIntoView({ behavior: 'smooth' });
             setTimeout(() => box.innerHTML = "", 5000);
         }
     </script>
