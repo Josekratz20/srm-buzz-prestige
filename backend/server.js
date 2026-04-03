@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, "..")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // DATABASE INITIALIZATION (Self-Healing)
-const dbFiles = ['devotionals.json', 'gallery.json', 'events.json', 'feedback.json', 'merchandise.json', 'news.json', 'sales.json'];
+const dbFiles = ['devotionals.json', 'gallery.json', 'events.json', 'feedback.json', 'merchandise.json', 'news.json', 'sales.json', 'users.json'];
 const dataDir = path.join(__dirname, '..', 'data');
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 dbFiles.forEach(file => {
@@ -279,7 +279,40 @@ app.delete("/api/devotionals/:id", (req, res) => {
 });
 
 /* =========================
-   AUTHENTICATION ROUTES
+   USER AUTHENTICATION (MEMBERSHIP)
+========================= */
+app.post("/api/users/signup", (req, res) => {
+    const data = readData("users.json");
+    const { name, email, password } = req.body;
+    
+    if (data.find(u => u.email === email)) {
+        return res.status(400).json({ success: false, message: "Email already registered." });
+    }
+
+    const newUser = { id: Date.now(), name, email, password, joined: new Date().toISOString() };
+    data.push(newUser);
+    writeData("users.json", data);
+    res.json({ success: true, message: "Welcome to the Sanctuary!" });
+});
+
+app.post("/api/users/login", (req, res) => {
+    const data = readData("users.json");
+    const { email, password } = req.body;
+    const user = data.find(u => u.email === email && u.password === password);
+    
+    if (user) {
+        res.json({ success: true, token: "USER_TOKEN_" + user.id, name: user.name });
+    } else {
+        res.status(401).json({ success: false, message: "Invalid credentials." });
+    }
+});
+
+app.get("/api/users", (req, res) => {
+    res.json(readData("users.json"));
+});
+
+/* =========================
+   AUTHENTICATION ROUTES (ADMIN)
 ========================= */
 app.post("/api/admin/login", (req, res) => {
     const { password } = req.body;

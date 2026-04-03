@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SRM | Join the Sanctuary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=auth">
+    <style>
+        body { background: #0f172a; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        .auth-container { 
+            background: #fff; width: 100%; max-width: 450px; padding: 60px 40px; 
+            border-radius: 30px; box-shadow: 0 50px 100px rgba(0,0,0,0.5); 
+            text-align: center; color: #0f172a; position: relative; z-index: 10;
+        }
+        .auth-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px; color: #b45309; }
+        .auth-input { width: 100%; padding: 18px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 20px; font-family: 'Poppins'; font-size: 1rem; }
+        .auth-btn { width: 100%; padding: 20px; background: #0f172a; color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 1rem; letter-spacing: 2px; }
+        .auth-btn:hover { background: #b45309; box-shadow: 0 10px 30px rgba(180, 83, 9, 0.4); }
+        .auth-toggle { margin-top: 30px; cursor: pointer; color: #b45309; font-weight: 700; opacity: 0.8; }
+        
+        .social-row { display: flex; justify-content: center; gap: 20px; margin-top: 40px; border-top: 1px solid #f1f5f9; padding-top: 30px; }
+        .social-icon { width: 40px; height: 40px; opacity: 0.6; transition: 0.3s; }
+        .social-icon:hover { opacity: 1; transform: scale(1.1); }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h1 class="auth-title" id="formTitle">The Sanctuary</h1>
+        <p id="formSubtitle" style="margin-bottom: 40px; opacity: 0.6;">Login to unlock official merchandise, stories, and the registers.</p>
+
+        <form id="authForm" onsubmit="handleAuth(event)">
+            <input type="text" id="authName" class="auth-input" placeholder="Your Name" style="display:none;">
+            <input type="email" id="authEmail" class="auth-input" placeholder="Email Address" required>
+            <input type="password" id="authPass" class="auth-input" placeholder="Secret Key" required>
+            <button type="submit" class="auth-btn" id="submitBtn">UNLOCK ACCESS 🔓</button>
+        </form>
+
+        <p class="auth-toggle" id="formToggle" onclick="toggleMode()">Are you new here? Sign up for the Sanctuary.</p>
+
+        <div class="social-row">
+            <a href="https://bit.ly/SrmbuzzYoutube" target="_blank">
+                <img src="https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg" class="social-icon" alt="YouTube">
+            </a>
+            <a href="https://bit.ly/SrmbuzzFacebook" target="_blank">
+                <img src="https://www.flaticon.com/svg/static/icons/svg/1384/1384053.svg" class="social-icon" alt="Facebook">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let isSignup = false;
+
+        function toggleMode() {
+            isSignup = !isSignup;
+            const title = document.getElementById('formTitle');
+            const sub = document.getElementById('formSubtitle');
+            const btn = document.getElementById('submitBtn');
+            const toggle = document.getElementById('formToggle');
+            const nameField = document.getElementById('authName');
+
+            if (isSignup) {
+                title.innerText = "Become a Member";
+                sub.innerText = "Join the Prestige Era and unlock exclusive content.";
+                btn.innerText = "JOIN THE SANCTUARY ✨";
+                toggle.innerText = "Already have access? Log in here.";
+                nameField.style.display = 'block';
+                nameField.required = true;
+            } else {
+                title.innerText = "The Sanctuary";
+                sub.innerText = "Login to unlock official merchandise, stories, and the registers.";
+                btn.innerText = "UNLOCK ACCESS 🔓";
+                toggle.innerText = "Are you new here? Sign up for the Sanctuary.";
+                nameField.style.display = 'none';
+                nameField.required = false;
+            }
+        }
+
+        async function handleAuth(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "⏳ PROCESSING...";
+            btn.disabled = true;
+
+            const url = isSignup ? '/api/users/signup' : '/api/users/login';
+            const body = {
+                email: document.getElementById('authEmail').value,
+                password: document.getElementById('authPass').value
+            };
+            if(isSignup) body.name = document.getElementById('authName').value;
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    if (isSignup) {
+                        alert("✨ Registered! You can now log in.");
+                        isSignup = true; toggleMode(); // Reset to login
+                    } else {
+                        localStorage.setItem('srmUserToken', data.token);
+                        localStorage.setItem('srmUserName', data.name);
+                        const params = new URLSearchParams(window.location.search);
+                        const redirect = params.get('redirect') || '/';
+                        window.location.href = redirect;
+                    }
+                } else {
+                    alert("❌ " + data.message);
+                }
+            } catch (e) {
+                alert("❌ Connection failed.");
+            } finally {
+                btn.innerText = isSignup ? "JOIN THE SANCTUARY ✨" : "UNLOCK ACCESS 🔓";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

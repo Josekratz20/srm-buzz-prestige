@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <script src="/js/auth-guard.js"></script>
     <script src="/js/cart.js"></script>
     
     <link rel="stylesheet" href="/css/style.css?v=1774600018412">
@@ -45,6 +46,14 @@
         </a>
         <div class="nav-controls">
             <button id="theme-toggle" onclick="SRM_ToggleTheme()" class="nav-toggle-btn" style="font-size: 28px;">🌙</button>
+        
+            <!-- Social Icons -->
+            <a href="https://bit.ly/SrmbuzzYoutube" target="_blank" class="nav-toggle-btn" style="font-size: 24px; text-decoration: none; position: relative; top: 2px;">🎥</a>
+            <a href="https://bit.ly/SrmbuzzFacebook" target="_blank" class="nav-toggle-btn" style="font-size: 24px; text-decoration: none; position: relative; top: 2px; margin-left: 10px;">🏛️</a>
+
+            <a href="/pages/cart.html" class="nav-cart">
+                <span style="font-size:1.2rem;">🛒</span> <span style="font-weight:600; margin-left:5px;" id="cart-count">0</span>
+            </a>
             <button class="nav-toggle-btn" id="srm-menu-toggle" onclick="SRM_ToggleMenu()">☰</button>
         </div>
         <div class="srm-nav-dropdown-placeholder" id="srm-nav-dropdown">
@@ -55,6 +64,9 @@
             <a href="/pages/devotional.html">Soul Fuel</a>
             <a href="/pages/events.html">Events Hub</a>
             <a href="/pages/contact.html">Contact</a>
+            <hr style="opacity: 0.1; margin: 10px 0;">
+            <a id="srm-auth-link" href="/pages/auth.html" style="color: var(--accent-gold); font-weight: 800;">🔐 JOIN MEMBERSHIP</a>
+            <a id="srm-logout-btn" href="#" onclick="srm_logout()" style="display:none; color: #ef4444;">🚪 LOGOUT</a>
         </div>
     </nav>
 
