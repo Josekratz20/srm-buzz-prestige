@@ -14,6 +14,15 @@ async function srm_submitForm(event, formId, successMsg) {
     formData.forEach((value, key) => (data[key] = value));
 
     try {
+        // POS INTEGRATION: Record to local sales.json if it's an order
+        if(formId === 'checkoutForm') {
+            await fetch('/api/sales', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+        }
+
         const response = await fetch(form.action, {
             method: 'POST',
             headers: {
@@ -31,7 +40,7 @@ async function srm_submitForm(event, formId, successMsg) {
             // Special case for cart: clear it after order
             if(formId === 'checkoutForm') {
                 localStorage.removeItem("cart");
-                updateCartCount();
+                if (typeof updateCartCount === 'function') updateCartCount();
                 setTimeout(() => window.location.href = "/", 3000);
             }
         } else {
@@ -44,6 +53,7 @@ async function srm_submitForm(event, formId, successMsg) {
         btn.innerHTML = originalText;
     }
 }
+
 
 function srm_showToast(msg, isError = false) {
     const toast = document.createElement("div");

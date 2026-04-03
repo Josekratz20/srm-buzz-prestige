@@ -49,6 +49,8 @@ updateCartCount();
 function renderCart() {
     const cartItemsContainer = document.getElementById("cart-items");
     const totalEl = document.getElementById("total");
+    const summaryContainer = document.getElementById("cart-summary");
+    const emptyMsg = document.getElementById("empty-cart-msg");
 
     if (!cartItemsContainer) return; // Only run on the cart page
 
@@ -56,34 +58,47 @@ function renderCart() {
     let total = 0;
 
     if (cart.length === 0) {
-        cartItemsContainer.innerHTML = "<p style='margin: 20px 0;'>Your cart is empty.</p>";
-        totalEl.textContent = "0";
+        if(summaryContainer) summaryContainer.style.display = 'none';
+        if(emptyMsg) emptyMsg.style.display = 'block';
         return;
     }
 
+    if(summaryContainer) summaryContainer.style.display = 'block';
+    if(emptyMsg) emptyMsg.style.display = 'none';
+
     cart.forEach((item, index) => {
-        // Ensure price is treated as a number
         const price = parseFloat(item.price);
         const itemTotal = price * item.qty;
         total += itemTotal;
 
-        cartItemsContainer.innerHTML += `
-            <div class="cart-item" style="display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid #333; margin-bottom: 10px; background: #1a1a1a; border-radius: 8px;">
-                <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px; background: white;">
-                <div style="flex: 1; padding: 0 15px;">
-                    <h3 style="margin: 0; font-size: 1.1em;">${item.name}</h3>
-                    <p style="margin: 5px 0 0; color: #aaa; font-size: 0.9em;">KSh ${price} x ${item.qty}</p>
-                </div>
-                <div style="font-weight: bold; font-size: 1.1em; color: #fff;">
-                    KSh ${itemTotal}
-                </div>
-                <button onclick="removeFromCart(${index})" style="background: #e74c3c; color: white; border: none; padding: 8px 12px; margin-left: 15px; cursor: pointer; border-radius: 5px; font-weight: bold;">X</button>
-            </div>
+        const div = document.createElement("div");
+        div.className = "cart-item-card";
+        div.style.cssText = `
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 25px; background: #fff; margin-bottom: 20px; 
+            border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            color: #0f172a; border: 1px solid rgba(0,0,0,0.05);
         `;
+        
+        div.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 15px; border: 3px solid #f1f5f9;">
+            <div style="flex: 1; padding: 0 30px;">
+                <h3 style="font-size: 1.5rem; font-family: 'Playfair Display', serif; margin-bottom: 5px; color: #b45309;">${item.name}</h3>
+                <p style="opacity: 0.6; font-weight: 600;">KSh ${price.toLocaleString()} x ${item.qty}</p>
+            </div>
+            <div style="text-align: right; margin-right: 30px;">
+                <p style="font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; opacity: 0.4;">TOTAL</p>
+                <p style="font-size: 1.5rem; font-weight: 800;">KSh ${itemTotal.toLocaleString()}</p>
+            </div>
+            <button onclick="removeFromCart(${index})" style="background: #fef2f2; color: #ef4444; border: 2px solid #fee2e2; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 800; transition: 0.3s;" onmouseover="this.style.background='#ef4444'; this.style.color='white'" onmouseout="this.style.background='#fef2f2'; this.style.color='#ef4444'">🗑️ DELETE</button>
+        `;
+        
+        cartItemsContainer.appendChild(div);
     });
 
-    totalEl.textContent = total;
+    totalEl.textContent = total.toLocaleString();
 }
+
 
 // REMOVE ITEM FROM CART
 function removeFromCart(index) {

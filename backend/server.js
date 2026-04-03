@@ -268,6 +268,32 @@ app.delete("/api/devotionals/:id", (req, res) => {
     res.json({ message: "Devotional deleted" });
 });
 
+/* =========================
+   SALES & POS ROUTES
+========================= */
+app.post("/api/sales", (req, res) => {
+    const data = readData("sales.json");
+    const newSale = {
+        id: Date.now(),
+        ...req.body,
+        date: new Date().toISOString()
+    };
+    data.push(newSale);
+    writeData("sales.json", data);
+    res.json({ message: "Sale recorded successfully" });
+});
+
+app.get("/api/sales", (req, res) => {
+    res.json(readData("sales.json"));
+});
+
+app.delete("/api/sales/:id", (req, res) => {
+    let data = readData("sales.json");
+    data = data.filter(item => item.id != req.params.id);
+    writeData("sales.json", data);
+    res.json({ message: "Sale record deleted" });
+});
+
 app.listen(PORT, () => {
 
     console.log(`🚀 Master Server running on http://localhost:${PORT}`);
