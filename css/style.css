@@ -1234,37 +1234,38 @@ button:hover {
 /* KABABA CHATBOT 3.0 - ANIMATED MENTOR */
 #kababa-chatbot {
     position: fixed;
-    bottom: 25px;
-    right: 25px;
+    bottom: 0px;
+    right: 20px;
     z-index: 10000;
 }
 
 #kababa-trigger {
-    background: linear-gradient(135deg, var(--accent-gold), #b45309);
+    background: transparent;
     border: none;
-    width: 80px; height: 80px;
-    border-radius: 50%;
+    width: 120px; height: auto;
     cursor: pointer;
-    box-shadow: 0 15px 30px rgba(180, 83, 9, 0.4);
-    display: flex; align-items: center; justify-content: center;
+    box-shadow: none;
+    display: flex; align-items: flex-end; justify-content: center;
     transition: 0.5s;
-    overflow: hidden;
-    animation: kababa-hover 3s ease-in-out infinite;
+    overflow: visible;
+    animation: kababa-walk 1.5s ease-in-out infinite alternate;
 }
 
-#kababa-trigger:hover { transform: scale(1.1); box-shadow: 0 20px 50px rgba(180, 83, 9, 0.6); }
+#kababa-trigger:hover { transform: scale(1.1); filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); }
 
 #kababa-trigger img { 
-    width: 110%; height: 110%; object-fit: cover; transition: 0.3s;
+    width: 100%; height: auto; object-fit: contain; transition: 0.3s;
+    mix-blend-mode: multiply; /* Removes white background in light mode */
+    filter: contrast(1.1);
 }
 
 .kababa-talk { animation: kababa-talk 0.3s ease-in-out infinite alternate !important; }
 .kababa-jump { animation: kababa-jump 0.5s ease-out !important; }
 .kababa-animating { filter: brightness(1.2) contrast(1.1); }
 
-@keyframes kababa-hover {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+@keyframes kababa-walk {
+    0% { transform: translateY(0) rotate(-2deg); }
+    100% { transform: translateY(-10px) rotate(2deg); }
 }
 
 @keyframes kababa-talk {
