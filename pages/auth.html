@@ -6,7 +6,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --jumia-orange: #f68b1e;
+            --srm-blue: #0f172a;
+            --srm-gold: #FFD700;
             --jumia-blue: #3b5998;
             --jumia-bg: #fff;
             --jumia-text: #282828;
@@ -40,22 +41,22 @@
         .input-group { position: relative; margin-bottom: 25px; text-align: left; }
         .input-group label { 
             position: absolute; top: -10px; left: 12px; background: #fff; padding: 0 5px;
-            font-size: 0.75rem; color: var(--jumia-orange); font-weight: 500; z-index: 1;
+            font-size: 0.75rem; color: var(--srm-blue); font-weight: 700; z-index: 1;
         }
         .auth-input { 
-            width: 100%; padding: 16px 14px; border: 1.5px solid var(--jumia-orange); 
+            width: 100%; padding: 16px 14px; border: 1.5px solid var(--srm-blue); 
             border-radius: 4px; font-size: 1rem; box-sizing: border-box; font-family: 'Roboto', sans-serif;
         }
-        .auth-input:focus { outline: none; border-width: 2px; }
+        .auth-input:focus { outline: none; border-color: var(--srm-gold); border-width: 2px; }
         .auth-input::placeholder { color: #bdbdbd; font-weight: 300; }
 
         .auth-btn { 
-            width: 100%; padding: 16px; background-color: var(--jumia-orange); 
-            color: #fff; border: none; border-radius: 4px; font-weight: 700; 
-            font-size: 1rem; cursor: pointer; box-shadow: 0 4px 8px rgba(246, 139, 30, 0.2);
-            transition: 0.2s;
+            width: 100%; padding: 16px; background-color: var(--srm-blue); 
+            color: var(--srm-gold); border: none; border-radius: 4px; font-weight: 700; 
+            font-size: 1rem; cursor: pointer; box-shadow: 0 4px 8px rgba(15, 23, 42, 0.2);
+            transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;
         }
-        .auth-btn:hover { background-color: #e67e17; transform: translateY(-1px); box-shadow: 0 6px 12px rgba(246, 139, 30, 0.3); }
+        .auth-btn:hover { background-color: #1e293b; transform: translateY(-1px); box-shadow: 0 6px 12px rgba(15, 23, 42, 0.3); }
 
         .divider { 
             display: flex; align-items: center; margin: 35px 0; color: #9e9e9e; font-size: 0.85rem;
@@ -73,12 +74,12 @@
         .social-btn:hover { transform: scale(1.15); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
         .footer-text { margin-top: 40px; font-size: 0.75rem; color: #757575; line-height: 1.6; }
-        .footer-text a { color: var(--jumia-orange); text-decoration: none; }
+        .footer-text a { color: var(--srm-blue); text-decoration: none; font-weight: 700; }
 
         /* Signup extensions */
         .signup-only { display: none; margin-bottom: 25px; }
-        .auth-toggle { margin-top: 25px; color: var(--jumia-orange); cursor: pointer; font-size: 0.9rem; font-weight: 500; }
-        .auth-toggle:hover { text-decoration: underline; }
+        .auth-toggle { margin-top: 25px; color: var(--srm-blue); cursor: pointer; font-size: 0.9rem; font-weight: 700; }
+        .auth-toggle:hover { text-decoration: underline; color: var(--srm-gold); }
     </style>
 </head>
 <body>
@@ -119,11 +120,11 @@
 
         <div class="social-login">
             <!-- FACEBOOK -->
-            <div class="social-btn" onclick="alert('Social login coming soon!')">
+            <div class="social-btn">
                 <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="17" fill="#1877F2"/><path d="M22.5 17H20V25H16V17H14V14H16V12C16 10.3 17.3 9 19 9H22V12H20C19.5 12 19 12.5 19 13V14H22.5L22.5 17Z" fill="white"/></svg>
             </div>
             <!-- GOOGLE -->
-            <div class="social-btn" onclick="alert('Social login coming soon!')">
+            <div class="social-btn">
                 <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="17" fill="white" stroke="#E0E0E0"/><path d="M24.5 17.2c0-.5-.1-.9-.2-1.3H17v2.6h4.2c-.2.9-.8 1.7-1.5 2.2v1.8h2.4c1.4-1.3 2.4-3.2 2.4-5.3z" fill="#4285F4"/><path d="M17 24.8c2.1 0 3.9-.7 5.2-1.9l-2.4-1.8c-.7.5-1.6.8-2.8.8-2.1 0-4-1.4-4.6-3.4H9.9v1.9c1.4 2.8 4.2 4.4 7.1 4.4z" fill="#34A853"/><path d="M12.4 18.5c-.2-.5-.3-1.1-.3-1.7s.1-1.2.3-1.7V13.2H9.9C9.3 14.4 9 15.6 9 17s.3 2.6.9 3.8l2.5-2.3z" fill="#FBBC05"/><path d="M17 11.7c1.2 0 2.2.4 3 1.1l2.3-2.3c-1.4-1.3-3.3-2.1-5.3-2.1-2.9 0-5.7 1.6-7.1 4.4l2.5 1.9c.6-2 2.5-3 4.6-3z" fill="#EA4335"/></svg>
             </div>
         </div>
