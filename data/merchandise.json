@@ -1,42 +1,122 @@
 [
   {
-    "id": 1772378557512,
-    "name": "kofia",
-    "price": "700",
-    "description": "small size",
-    "imageUrl": "/uploads/1772378557498.png",
-    "date": "2026-03-01T15:22:37.512Z"
+    "id": 1777629935534,
+    "name": "Polo Shirt ",
+    "price": "1100",
+    "description": "Blue in color and durable ",
+    "imageUrl": "/uploads/1777629935486.jpeg",
+    "date": "2026-05-01T10:05:35.534Z"
   },
   {
-    "id": 1772378613536,
-    "name": "belt",
+    "id": 1777629983139,
+    "name": "Polo Shirt ",
+    "price": "1100",
+    "description": "Yellow in color and durable ",
+    "imageUrl": "/uploads/1777629983125.jpeg",
+    "date": "2026-05-01T10:06:23.139Z"
+  },
+  {
+    "id": 1777630020592,
+    "name": "Polo Shirt ",
+    "price": "1100",
+    "description": "White in color and durable ",
+    "imageUrl": "/uploads/1777630020577.jpeg",
+    "date": "2026-05-01T10:07:00.592Z"
+  },
+  {
+    "id": 1777630072097,
+    "name": "T-shirt",
+    "price": "850",
+    "description": "White in color ",
+    "imageUrl": "/uploads/1777630072088.jpeg",
+    "date": "2026-05-01T10:07:52.097Z"
+  },
+  {
+    "id": 1777630106690,
+    "name": "T-Shirt",
+    "price": "850",
+    "description": "Blue in color ",
+    "imageUrl": "/uploads/1777630106676.jpeg",
+    "date": "2026-05-01T10:08:26.690Z"
+  },
+  {
+    "id": 1777630146218,
+    "name": "T-Shirt",
+    "price": "850",
+    "description": "Yellow in color ",
+    "imageUrl": "/uploads/1777630146207.jpeg",
+    "date": "2026-05-01T10:09:06.218Z"
+  },
+  {
+    "id": 1777630251074,
+    "name": "Hoodie ",
+    "price": "2500",
+    "description": "White in color ",
+    "imageUrl": "/uploads/1777630251063.jpeg",
+    "date": "2026-05-01T10:10:51.074Z"
+  },
+  {
+    "id": 1777630290808,
+    "name": "Hoodie ",
+    "price": "2500",
+    "description": "Yellow in color ",
+    "imageUrl": "/uploads/1777630290803.jpeg",
+    "date": "2026-05-01T10:11:30.808Z"
+  },
+  {
+    "id": 1777630319504,
+    "name": "Hoodie ",
+    "price": "2500",
+    "description": "Blue in color",
+    "imageUrl": "/uploads/1777630319498.jpeg",
+    "date": "2026-05-01T10:11:59.504Z"
+  },
+  {
+    "id": 1777630376634,
+    "name": "Cap",
     "price": "650",
-    "description": "small,median",
-    "imageUrl": "/uploads/1772378613239.JPG",
-    "date": "2026-03-01T15:23:33.536Z"
+    "description": "White in color ",
+    "imageUrl": "/uploads/1777630376615.jpeg",
+    "date": "2026-05-01T10:12:56.634Z"
   },
   {
-    "id": 1772378730307,
-    "name": "scarf",
-    "price": "150",
-    "description": "srm large  ",
-    "imageUrl": "/uploads/1772378730100.JPG",
-    "date": "2026-03-01T15:25:30.307Z"
+    "id": 1777630408154,
+    "name": "Cap  ",
+    "price": "650",
+    "description": "Yellow  in color ",
+    "imageUrl": "/uploads/1777630408141.jpeg",
+    "date": "2026-05-01T10:13:28.154Z"
   },
   {
-    "id": 1774722451171,
-    "name": "Polo shirt ",
-    "price": "1200",
-    "description": "Available in dark blue and green ",
-    "imageUrl": "/uploads/1774722451025.JPG",
-    "date": "2026-03-28T18:27:31.171Z"
+    "id": 1777630443302,
+    "name": "Cap ",
+    "price": "650",
+    "description": "Blue in color ",
+    "imageUrl": "/uploads/1777630443290.jpeg",
+    "date": "2026-05-01T10:14:03.302Z"
   },
   {
-    "id": 1775159843833,
-    "name": "SRM TIE ",
-    "price": "150 ",
-    "description": "Available in white and blue ",
-    "imageUrl": "/uploads/1775159843574.JPG",
-    "date": "2026-04-02T19:57:23.833Z"
+    "id": 1777630494396,
+    "name": "Mug ",
+    "price": "900",
+    "description": "White in color ",
+    "imageUrl": "/uploads/1777630494389.jpeg",
+    "date": "2026-05-01T10:14:54.396Z"
+  },
+  {
+    "id": 1777630527608,
+    "name": "Mug ",
+    "price": "900",
+    "description": "Yellow in color ",
+    "imageUrl": "/uploads/1777630527599.jpeg",
+    "date": "2026-05-01T10:15:27.608Z"
+  },
+  {
+    "id": 1777630560359,
+    "name": "Mug ",
+    "price": "900",
+    "description": "Blue in color ",
+    "imageUrl": "/uploads/1777630560347.jpeg",
+    "date": "2026-05-01T10:16:00.359Z"
   }
 ]
