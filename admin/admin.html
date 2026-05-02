@@ -78,6 +78,12 @@
                 <h3>Post Story</h3>
                 <form onsubmit="handleMasterSubmit(event, '/api/news', 'stories')">
                     <label>Story title</label><input type="text" name="title" class="admin-input" required>
+                    <label style="display:block; margin-top:20px;">Category</label>
+                    <select name="category" class="admin-input" required>
+                        <option value="scouts">Scouts (Vibez)</option>
+                        <option value="divinity">Divinity (Events)</option>
+                        <option value="devotional">Devotional (Soul Fuel)</option>
+                    </select>
                     <label style="display:block; margin-top:20px;">Content</label><textarea name="content" class="admin-input" rows="5" required></textarea>
                     <label style="display:block; margin-top:20px;">Feature Image</label><input type="file" name="image" class="admin-input" accept="image/*" required>
                     <button type="submit" class="admin-btn">POST TO CAMPUS</button>

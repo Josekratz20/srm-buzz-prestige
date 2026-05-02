@@ -2,321 +2,255 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
+const { Gallery, Event, Merchandise, Sale, User } = require("./models/Schemas");
+const Devotional = require("./models/Devotional");
+const Post = require("./models/post");
 
+// Initialize environment variables
+dotenv.config();
+
+// Connect to Cloud Database
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(express.static(path.join(__dirname, "../public")));
-
-// Serve frontend from root
 app.use(express.static(path.join(__dirname, "..")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// DATABASE INITIALIZATION (Self-Healing)
-const dbFiles = ['devotionals.json', 'gallery.json', 'events.json', 'feedback.json', 'merchandise.json', 'news.json', 'sales.json', 'users.json'];
-const dataDir = path.join(__dirname, '..', 'data');
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
-dbFiles.forEach(file => {
-    const fPath = path.join(dataDir, file);
-    if (!fs.existsSync(fPath)) fs.writeFileSync(fPath, "[]", "utf8");
-});
-
-// Helper functions
-function readData(file) {
-    const filePath = path.join(__dirname, "..", "data", file);
-    if (!fs.existsSync(filePath)) {
-        fs.writeFileSync(filePath, "[]", "utf8");
-    }
-    try {
-        let content = fs.readFileSync(filePath, "utf8");
-        // DEEP CLEANSING FOR ALL HIDDEN CHARACTERS (BOM, etc.)
-        content = content.replace(/[^\x20-\x7E\s\u00A0-\uFFFF]/g, ""); 
-        content = content.trim();
-        if(!content || content === "") content = "[]";
-        
-        const parsed = JSON.parse(content);
-        console.log("✅ DATA READY: " + file);
-        return parsed;
-    } catch (e) {
-        console.error("❌ CRITICAL REPAIR on " + file + ":", e.message);
-        return [];
-    }
-
-}
-
-
-
-function writeData(file, data) {
-    const filePath = path.join(__dirname, "..", "data", file);
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
-const uploadPath = path.join(__dirname, "../public/uploads");
-
+// File Upload Configuration
+const uploadPath = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadPath)) {
     fs.mkdirSync(uploadPath, { recursive: true });
 }
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadPath);
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
+    destination: (req, file, cb) => cb(null, uploadPath),
+    filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
 });
-
 const upload = multer({ storage: storage });
 
 /* =========================
    DEVOTIONAL ROUTES
    ========================= */
-app.get("/api/devotionals", (req, res) => {
-    console.log("GET /api/devotionals hit");
+app.get("/api/devotionals", async (req, res) => {
     try {
-        const data = readData("devotionals.json");
+        const data = await Devotional.find().sort({ createdAt: -1 });
         res.json(data);
     } catch (e) {
-        console.error("Data Read Error:", e);
-        res.status(500).json({ error: "Storage error" });
+        res.status(500).json({ error: "DB Error" });
     }
 });
 
-app.post("/api/devotionals", (req, res) => {
-    console.log("POST /api/devotionals hit", req.body);
-    const data = readData("devotionals.json");
-
-    const newItem = {
-        id: Date.now(),
-        title: req.body.title,
-        content: req.body.content
-    };
-
-    data.push(newItem);
-    writeData("devotionals.json", data);
-
-    res.json({ message: "Saved" });
+app.post("/api/devotionals", async (req, res) => {
+    try {
+        const newItem = new Devotional(req.body);
+        await newItem.save();
+        res.json({ message: "Saved to Cloud" });
+    } catch (e) {
+        res.status(500).json({ error: "Save failed" });
+    }
 });
 
-app.delete("/api/devotionals/:id", (req, res) => {
-    let data = readData("devotionals.json");
-
-    const id = parseInt(req.params.id);
-
-    data = data.filter(item => item.id !== id);
-
-    writeData("devotionals.json", data);
-
-    res.json({ message: "Deleted" });
+app.delete("/api/devotionals/:id", async (req, res) => {
+    try {
+        await Devotional.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (e) {
+        res.status(500).json({ error: "Delete failed" });
+    }
 });
+
 /* =========================
    GALLERY ROUTES
-========================= */
-
-app.get("/api/gallery", (req, res) => {
-    res.json(readData("gallery.json"));
+   ========================= */
+app.get("/api/gallery", async (req, res) => {
+    try {
+        const data = await Gallery.find().sort({ date: -1 });
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "DB Error" });
+    }
 });
 
-app.post("/api/gallery", upload.single("image"), (req, res) => {
-    const data = readData("gallery.json");
-
-    const newItem = {
-        id: Date.now(),
-        imageUrl: "/uploads/" + req.file.filename,
-        caption: req.body.caption,
-        date: new Date().toISOString()
-    };
-
-    data.push(newItem);
-    writeData("gallery.json", data);
-
-    res.json({ message: "Uploaded" });
+app.post("/api/gallery", upload.single("image"), async (req, res) => {
+    try {
+        const newItem = new Gallery({
+            imageUrl: "/uploads/" + req.file.filename,
+            caption: req.body.caption
+        });
+        await newItem.save();
+        res.json({ message: "Uploaded to Cloud" });
+    } catch (e) {
+        res.status(500).json({ error: "Upload failed" });
+    }
 });
 
-app.delete("/api/gallery/:id", (req, res) => {
-    const data = readData("gallery.json");
-
-    const filtered = data.filter(item => item.id != req.params.id);
-
-    writeData("gallery.json", filtered);
-
-    res.json({ message: "Deleted successfully" });
+app.delete("/api/gallery/:id", async (req, res) => {
+    try {
+        await Gallery.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (e) {
+        res.status(500).json({ error: "Delete failed" });
+    }
 });
 
 /* =========================
    EVENTS ROUTES
-========================= */
-
-app.get("/api/events", (req, res) => {
-    res.json(readData("events.json"));
+   ========================= */
+app.get("/api/events", async (req, res) => {
+    try {
+        const data = await Event.find().sort({ uploadedAt: -1 });
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "DB Error" });
+    }
 });
 
-app.post("/api/events", (req, res) => {
-    const data = readData("events.json");
-    data.push(req.body);
-    writeData("events.json", data);
-    res.json({ message: "Event saved" });
+app.post("/api/events", upload.single("image"), async (req, res) => {
+    try {
+        const newItem = new Event({
+            title: req.body.title,
+            description: req.body.description,
+            dateString: req.body.dateString,
+            imageUrl: "/uploads/" + req.file.filename
+        });
+        await newItem.save();
+        res.json({ message: "Event saved to Cloud" });
+    } catch (e) {
+        res.status(500).json({ error: "Save failed" });
+    }
 });
 
-/* =========================
-   FEEDBACK ROUTES
-========================= */
-
-app.get("/api/feedback", (req, res) => {
-    res.json(readData("feedback.json"));
+app.delete("/api/events/:id", async (req, res) => {
+    try {
+        await Event.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (e) {
+        res.status(500).json({ error: "Delete failed" });
+    }
 });
 
-app.post("/api/feedback", (req, res) => {
-    const data = readData("feedback.json");
-    data.push(req.body);
-    writeData("feedback.json", data);
-    res.json({ message: "Feedback saved" });
-});
 /* =========================
    STORE & MERCH ROUTES
-========================= */
-app.post("/api/merchandise", upload.single("image"), (req, res) => {
-    const data = readData("merchandise.json");
-    const newItem = {
-        id: Date.now(),
-        name: req.body.name,
-        price: req.body.price,
-        description: req.body.description,
-        imageUrl: "/uploads/" + req.file.filename,
-        date: new Date().toISOString()
-    };
-    data.push(newItem);
-    writeData("merchandise.json", data);
-    res.json({ message: "Product added successfully" });
-});
-
-app.get("/api/merchandise", (req, res) => {
-    res.json(readData("merchandise.json"));
-});
-
-/* =========================
-   NEWS & STORIES ROUTES
-========================= */
-app.post("/api/news", upload.single("image"), (req, res) => {
-    const data = readData("news.json");
-    const newItem = {
-        id: Date.now(),
-        title: req.body.title,
-        content: req.body.content,
-        imageUrl: "/uploads/" + req.file.filename,
-        trending: req.body.trending === "true",
-        date: new Date().toISOString()
-    };
-    data.push(newItem);
-    writeData("news.json", data);
-    res.json({ message: "News posted successfully" });
-});
-
-app.get("/api/news", (req, res) => {
-    res.json(readData("news.json"));
-});
-
-/* =========================
-   EVENTS ROUTES
-========================= */
-app.post("/api/events", upload.single("image"), (req, res) => {
-    const data = readData("events.json");
-    const newItem = {
-        id: Date.now(),
-        title: req.body.title,
-        description: req.body.description,
-        dateString: req.body.dateString,
-        imageUrl: "/uploads/" + req.file.filename,
-        uploadedAt: new Date().toISOString()
-    };
-    data.push(newItem);
-    writeData("events.json", data);
-    res.json({ message: "Event saved successfully" });
-});
-
-app.get("/api/events", (req, res) => {
-    res.json(readData("events.json"));
-});
-
-/* =========================
-   DELETE ROUTES (MASTER)
-========================= */
-app.delete("/api/merchandise/:id", (req, res) => {
-    let data = readData("merchandise.json");
-    data = data.filter(item => item.id != req.params.id);
-    writeData("merchandise.json", data);
-    res.json({ message: "Product deleted" });
-});
-
-app.delete("/api/news/:id", (req, res) => {
-    let data = readData("news.json");
-    data = data.filter(item => item.id != req.params.id);
-    writeData("news.json", data);
-    res.json({ message: "News deleted" });
-});
-
-app.delete("/api/gallery/:id", (req, res) => {
-    let data = readData("gallery.json");
-    data = data.filter(item => item.id != req.params.id);
-    writeData("gallery.json", data);
-    res.json({ message: "Gallery item deleted" });
-});
-
-app.delete("/api/events/:id", (req, res) => {
-    let data = readData("events.json");
-    data = data.filter(item => item.id != req.params.id);
-    writeData("events.json", data);
-    res.json({ message: "Event deleted" });
-});
-
-app.delete("/api/devotionals/:id", (req, res) => {
-    let data = readData("devotionals.json");
-    data = data.filter(item => item.id != req.params.id);
-    writeData("devotionals.json", data);
-    res.json({ message: "Devotional deleted" });
-});
-
-/* =========================
-   USER AUTHENTICATION (MEMBERSHIP)
-========================= */
-app.post("/api/users/signup", (req, res) => {
-    const data = readData("users.json");
-    const { name, email, password } = req.body;
-    
-    if (data.find(u => u.email === email)) {
-        return res.status(400).json({ success: false, message: "Email already registered." });
-    }
-
-    const newUser = { id: Date.now(), name, email, password, joined: new Date().toISOString() };
-    data.push(newUser);
-    writeData("users.json", data);
-    res.json({ success: true, message: "Welcome to the Sanctuary!" });
-});
-
-app.post("/api/users/login", (req, res) => {
-    const data = readData("users.json");
-    const { email, password } = req.body;
-    const user = data.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-        res.json({ success: true, token: "USER_TOKEN_" + user.id, name: user.name });
-    } else {
-        res.status(401).json({ success: false, message: "Invalid credentials." });
+   ========================= */
+app.get("/api/merchandise", async (req, res) => {
+    try {
+        const data = await Merchandise.find().sort({ date: -1 });
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "DB Error" });
     }
 });
 
-app.get("/api/users", (req, res) => {
-    res.json(readData("users.json"));
+app.post("/api/merchandise", upload.single("image"), async (req, res) => {
+    try {
+        const newItem = new Merchandise({
+            name: req.body.name,
+            price: req.body.price,
+            description: req.body.description,
+            imageUrl: "/uploads/" + req.file.filename
+        });
+        await newItem.save();
+        res.json({ message: "Product added to Cloud" });
+    } catch (e) {
+        res.status(500).json({ error: "Save failed" });
+    }
+});
+
+app.delete("/api/merchandise/:id", async (req, res) => {
+    try {
+        await Merchandise.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (e) {
+        res.status(500).json({ error: "Delete failed" });
+    }
 });
 
 /* =========================
-   AUTHENTICATION ROUTES (ADMIN)
-========================= */
+   NEWS & STORIES ROUTES (Using Post Model)
+   ========================= */
+app.get("/api/news", async (req, res) => {
+    try {
+        const data = await Post.find().sort({ createdAt: -1 });
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "DB Error" });
+    }
+});
+
+app.post("/api/news", upload.single("image"), async (req, res) => {
+    try {
+        const newItem = new Post({
+            title: req.body.title,
+            content: req.body.content,
+            image: "/uploads/" + req.file.filename,
+            category: req.body.category || 'general'
+        });
+        await newItem.save();
+        res.json({ message: "News posted to Cloud" });
+    } catch (e) {
+        res.status(500).json({ error: "Post failed" });
+    }
+});
+
+app.delete("/api/news/:id", async (req, res) => {
+    try {
+        await Post.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (e) {
+        res.status(500).json({ error: "Delete failed" });
+    }
+});
+
+/* =========================
+   USER AUTHENTICATION
+   ========================= */
+app.post("/api/users/signup", async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        const exists = await User.findOne({ email });
+        if (exists) return res.status(400).json({ success: false, message: "Email registered." });
+
+        const newUser = new User({ name, email, password });
+        await newUser.save();
+        res.json({ success: true, message: "Welcome!" });
+    } catch (e) {
+        res.status(500).json({ error: "Signup failed" });
+    }
+});
+
+app.post("/api/users/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email, password });
+        if (user) {
+            res.json({ success: true, token: "USER_TOKEN_" + user._id, name: user.name });
+        } else {
+            res.status(401).json({ success: false, message: "Invalid credentials." });
+        }
+    } catch (e) {
+        res.status(500).json({ error: "Login failed" });
+    }
+});
+
+app.get("/api/users", async (req, res) => {
+    try {
+        const data = await User.find().sort({ joined: -1 });
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "DB Error" });
+    }
+});
+
+/* =========================
+   ADMIN AUTHENTICATION
+   ========================= */
 app.post("/api/admin/login", (req, res) => {
     const { password } = req.body;
-    // MASTER PASSWORD: You can change this to anything!
     if (password === "PRESTIGE2026") {
         res.json({ success: true, token: "MASTER_ADMIN_TOKEN_" + Date.now() });
     } else {
@@ -326,31 +260,42 @@ app.post("/api/admin/login", (req, res) => {
 
 /* =========================
    SALES & POS ROUTES
-========================= */
-app.post("/api/sales", (req, res) => {
-    const data = readData("sales.json");
-    const newSale = {
-        id: Date.now(),
-        ...req.body,
-        date: new Date().toISOString()
-    };
-    data.push(newSale);
-    writeData("sales.json", data);
-    res.json({ message: "Sale recorded successfully" });
+   ========================= */
+app.post("/api/sales", async (req, res) => {
+    try {
+        const newSale = new Sale({
+            customerName: req.body.name,
+            phone: req.body.phone,
+            Order_Items: req.body.Order_Items,
+            transaction_code: req.body.transaction_code,
+            total: req.body.total
+        });
+        await newSale.save();
+        res.json({ message: "Sale recorded in Cloud" });
+    } catch (e) {
+        res.status(500).json({ error: "Record failed" });
+    }
 });
 
-app.get("/api/sales", (req, res) => {
-    res.json(readData("sales.json"));
+app.get("/api/sales", async (req, res) => {
+    try {
+        const data = await Sale.find().sort({ date: -1 });
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "DB Error" });
+    }
 });
 
-app.delete("/api/sales/:id", (req, res) => {
-    let data = readData("sales.json");
-    data = data.filter(item => item.id != req.params.id);
-    writeData("sales.json", data);
-    res.json({ message: "Sale record deleted" });
+app.delete("/api/sales/:id", async (req, res) => {
+    try {
+        await Sale.findByIdAndDelete(req.params.id);
+        res.json({ message: "Record deleted" });
+    } catch (e) {
+        res.status(500).json({ error: "Delete failed" });
+    }
 });
 
 app.listen(PORT, () => {
-
     console.log(`🚀 Master Server running on http://localhost:${PORT}`);
-});
+});
+

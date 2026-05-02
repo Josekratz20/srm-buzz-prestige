@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const eventsContainer = document.getElementById("events-container");
     const devotionalContainer = document.getElementById("devotional-container");
 
-    const API_URL = "http://localhost:5000/api/posts";
+    const API_URL = "/api/news";
 
     // Fetch all posts once
     fetch(API_URL)
@@ -56,10 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Card template function
     function createCard(post) {
         return `
-            <div class="card">
-                <h3>${post.title}</h3>
-                <p>${post.content.substring(0, 150)}...</p>
-                <small>By ${post.author || "Admin"}</small>
+            <div class="modern-card" data-category="${post.category}">
+                <div class="card-image-container">
+                    <img src="${post.image}" alt="${post.title}" class="card-img" onerror="this.src='https://via.placeholder.com/400x200?text=SRM+Prestige'">
+                </div>
+                <div class="card-content">
+                    <span class="card-badge">${post.category.toUpperCase()}</span>
+                    <h3 class="card-title">${post.title}</h3>
+                    <p class="card-excerpt">${post.content.substring(0, 100)}...</p>
+                    <button class="card-btn">READ STORY</button>
+                </div>
             </div>
         `;
     }
