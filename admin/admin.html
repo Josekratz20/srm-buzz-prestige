@@ -122,7 +122,10 @@
                 <h3>Record Divine Word</h3>
                 <form onsubmit="handleMasterSubmit(event, 'https://srm-buzz-prestige.onrender.com/api/devotionals', 'fuel', true)">
                     <label>Message Chapter/Title</label><input type="text" name="title" class="admin-input" required>
+                    <label style="display:block; margin-top:20px;">Bible Verse (Optional)</label><input type="text" name="verse" class="admin-input">
                     <label style="display:block; margin-top:20px;">The Inspiring Word</label><textarea name="content" class="admin-input" rows="8" required></textarea>
+                    <label style="display:block; margin-top:20px;">Daily Challenge (Optional)</label><input type="text" name="challenge" class="admin-input">
+                    <label style="display:block; margin-top:20px;">Closing Prayer (Optional)</label><input type="text" name="prayer" class="admin-input">
                     <button type="submit" class="admin-btn">RELEASE WORD</button>
                 </form>
             </div>
@@ -221,10 +224,8 @@
                 let res;
                 const finalUrl = url.startsWith('http') ? url : 'https://srm-buzz-prestige.onrender.com' + url;
                 if(isJson) {
-                    const data = {
-                        title: form.querySelector('[name="title"]').value,
-                        content: form.querySelector('[name="content"]').value
-                    };
+                    const data = {};
+                    new FormData(form).forEach((value, key) => data[key] = value);
                     res = await fetch(finalUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },

@@ -146,7 +146,10 @@
                             </svg>
                         </div>
                         <h2 class="scroll-chapter">${d.title}</h2>
+                        ${d.verse ? `<p style="text-align:center; font-style:italic; margin-bottom:20px; color:#5d4037;">" ${d.verse} "</p>` : ''}
                         <div id="text-${index}" class="scroll-body">${d.content}</div>
+                        ${d.challenge ? `<div style="margin-top:20px; border-top:1px dashed rgba(0,0,0,0.1); padding-top:10px;"><strong>Daily Challenge:</strong> ${d.challenge}</div>` : ''}
+                        ${d.prayer ? `<div style="margin-top:10px; font-style:italic; color:#3e2723;"><strong>Prayer:</strong> ${d.prayer}</div>` : ''}
                         <div style="display:flex; gap:10px;">
                             <button class="listen-btn" id="btn-play-${index}" onclick="togglePlay('${index}')">📜 LISTEN TO SCROLL</button>
                             <button class="listen-btn" style="background:#8b0000; display:none;" id="btn-stop-${index}" onclick="stopAudio('${index}')">⏹ QUICK STOP</button>
