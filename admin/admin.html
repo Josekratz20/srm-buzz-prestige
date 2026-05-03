@@ -169,7 +169,7 @@
         async function tryAdminLogin() {
             const pass = document.getElementById('admin-pass').value;
             try {
-                const res = await fetch('/api/admin/login', {
+                const res = await fetch('https://srm-buzz-prestige.onrender.com/api/admin/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password: pass })
@@ -224,14 +224,14 @@
                         title: form.querySelector('[name="title"]').value,
                         content: form.querySelector('[name="content"]').value
                     };
-                    res = await fetch(url, {
+                    res = await fetch('https://srm-buzz-prestige.onrender.com' + url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
                     });
                 } else {
                     const formData = new FormData(form);
-                    res = await fetch(url, { method: 'POST', body: formData });
+                    res = await fetch('https://srm-buzz-prestige.onrender.com' + url, { method: 'POST', body: formData });
                 }
 
                 if(res.ok) {
@@ -256,7 +256,7 @@
             
             listEl.innerHTML = "<p>Scanning register...</p>";
             try {
-                const res = await fetch(endpoints[section] + "?v=" + Date.now());
+                const res = await fetch('https://srm-buzz-prestige.onrender.com' + endpoints[section] + "?v=" + Date.now());
                 const data = await res.json();
                 listEl.innerHTML = "";
                 data.forEach(item => {
@@ -292,7 +292,7 @@
 
         async function deleteItem(endpoint, id, section) {
             if(!confirm("Permanently delete this from the register?")) return;
-            const res = await fetch(`${endpoint}/${id}`, { method: 'DELETE' });
+            const res = await fetch(`https://srm-buzz-prestige.onrender.com${endpoint}/${id}`, { method: 'DELETE' });
             if(res.ok) { showAlert("🗑️ Removed successfully."); loadManageList(section); }
         }
 
