@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const { Gallery, Event, Merchandise, Sale, User } = require("./models/Schemas");
@@ -19,7 +20,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "..")));
+app.use(cors());
+// Static files will be served later...
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // File Upload Configuration
@@ -294,6 +296,10 @@ app.delete("/api/sales/:id", async (req, res) => {
         res.status(500).json({ error: "Delete failed" });
     }
 });
+
+// SERVE STATIC FILES AFTER ROUTES
+app.use(express.static(path.join(__dirname, "..")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(PORT, () => {
     console.log(`🚀 Master Server running on http://localhost:${PORT}`);
