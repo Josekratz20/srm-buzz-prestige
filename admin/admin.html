@@ -273,7 +273,7 @@
                                     <p><strong>TRANSACTION CODE:</strong> <span style="color: #4ade80; font-weight: bold; border: 1px solid #4ade80; padding: 2px 8px; border-radius: 5px;">${item.transaction_code}</span></p>
                                     <p style="opacity: 0.5; font-size: 0.8rem; margin-top: 15px;">Recorded: ${new Date(item.date).toLocaleString()}</p>
                                 </div>
-                                <button onclick="deleteItem('/api/sales', '${item.id}', 'sales')" style="background:#dc2626; color:white; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight: bold;">DELETE RECORD</button>
+                                <button onclick="deleteItem('/api/sales', '${item._id || item.id}', 'sales')" style="background:#dc2626; color:white; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight: bold;">DELETE RECORD</button>
                             </div>
                         `;
                     } else if (section === 'users-admin') {
@@ -282,7 +282,7 @@
                     } else {
                         const title = item.name || item.title || item.caption;
                         div.className = 'manage-item';
-                        div.innerHTML = `<span>${title}</span> <button onclick="deleteItem('${endpoints[section]}', '${item.id}', '${section}')" style="background:#dc2626; color:white; border:none; padding:5px 12px; border-radius:5px; cursor:pointer;">DELETE</button>`;
+                        div.innerHTML = `<span>${title}</span> <button onclick="deleteItem('${endpoints[section]}', '${item._id || item.id}', '${section}')" style="background:#dc2626; color:white; border:none; padding:5px 12px; border-radius:5px; cursor:pointer;">DELETE</button>`;
                     }
                     listEl.appendChild(div);
                 });
