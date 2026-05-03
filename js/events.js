@@ -26,7 +26,7 @@ async function loadEvents() {
                         ${event.dateString.split(",")[0]}<br>
                         <span style="font-size: 0.7rem;">${event.dateString.split(",")[1] || 2024}</span>
                     </div>
-                    <img src="https://srm-buzz-prestige.onrender.com${event.imageUrl}" alt="${event.title}" class="event-img">
+                    <img src="${event.imageUrl.startsWith('data:') ? event.imageUrl : 'https://srm-buzz-prestige.onrender.com' + event.imageUrl}" alt="${event.title}" class="event-img">
                     <div class="event-info">
                         <h2 class="event-title">${event.title}</h2>
                         <p class="event-desc">${event.description || 'Join us for an unforgettable purpose-driven gathering.'}</p>
@@ -43,3 +43,4 @@ async function loadEvents() {
         container.innerHTML = "<p>Error loading events hub. Please try again.</p>";
     }
 }
+

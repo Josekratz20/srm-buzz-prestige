@@ -95,7 +95,7 @@
                     container.innerHTML += `
         <div class="story-card">
           ${item.trending ? `<div class="trending-glow">🔥 Hot Story</div>` : ""}
-          <img src="https://srm-buzz-prestige.onrender.com${item.imageUrl}" alt="${item.title}">
+          <img src="${item.imageUrl.startsWith('data:') ? item.imageUrl : 'https://srm-buzz-prestige.onrender.com' + item.imageUrl}" alt="${item.title}">
           <div class="story-content">
             <h3 class="story-title">${item.title}</h3>
             <p class="story-text">${item.content}</p>
@@ -147,3 +147,4 @@
 </body>
 
 </html>
+

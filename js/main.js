@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return `
             <div class="modern-card" data-category="${post.category}">
                 <div class="card-image-container">
-                    <img src="https://srm-buzz-prestige.onrender.com${post.image}" alt="${post.title}" class="card-img" onerror="this.src='https://via.placeholder.com/400x200?text=SRM+Prestige'">
+                    <img src="${post.image.startsWith('data:') ? post.image : 'https://srm-buzz-prestige.onrender.com' + post.image}" alt="${post.title}" class="card-img" onerror="this.src='https://via.placeholder.com/400x200?text=SRM+Prestige'">
                 </div>
                 <div class="card-content">
                     <span class="card-badge">${post.category.toUpperCase()}</span>
@@ -87,3 +87,4 @@ if (filter) {
         });
     });
 }
+

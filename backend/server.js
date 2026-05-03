@@ -80,12 +80,18 @@ app.get("/api/gallery", async (req, res) => {
 
 app.post("/api/gallery", upload.single("image"), async (req, res) => {
     try {
+        const filePath = path.join(uploadPath, req.file.filename);
+        const fileData = fs.readFileSync(filePath);
+        const base64Image = `data:${req.file.mimetype};base64,${fileData.toString('base64')}`;
+
         const newItem = new Gallery({
-            imageUrl: "/uploads/" + req.file.filename,
+            imageUrl: base64Image,
             caption: req.body.caption
         });
         await newItem.save();
-        res.json({ message: "Uploaded to Cloud" });
+        
+        fs.unlinkSync(filePath);
+        res.json({ message: "Uploaded to Cloud Permanently" });
     } catch (e) {
         res.status(500).json({ error: "Upload failed" });
     }
@@ -114,14 +120,20 @@ app.get("/api/events", async (req, res) => {
 
 app.post("/api/events", upload.single("image"), async (req, res) => {
     try {
+        const filePath = path.join(uploadPath, req.file.filename);
+        const fileData = fs.readFileSync(filePath);
+        const base64Image = `data:${req.file.mimetype};base64,${fileData.toString('base64')}`;
+
         const newItem = new Event({
             title: req.body.title,
             description: req.body.description,
             dateString: req.body.dateString,
-            imageUrl: "/uploads/" + req.file.filename
+            imageUrl: base64Image
         });
         await newItem.save();
-        res.json({ message: "Event saved to Cloud" });
+        
+        fs.unlinkSync(filePath);
+        res.json({ message: "Event saved to Cloud Permanently" });
     } catch (e) {
         res.status(500).json({ error: "Save failed" });
     }
@@ -150,15 +162,24 @@ app.get("/api/merchandise", async (req, res) => {
 
 app.post("/api/merchandise", upload.single("image"), async (req, res) => {
     try {
+        const filePath = path.join(uploadPath, req.file.filename);
+        const fileData = fs.readFileSync(filePath);
+        const base64Image = `data:${req.file.mimetype};base64,${fileData.toString('base64')}`;
+        
         const newItem = new Merchandise({
             name: req.body.name,
             price: req.body.price,
             description: req.body.description,
-            imageUrl: "/uploads/" + req.file.filename
+            imageUrl: base64Image
         });
         await newItem.save();
-        res.json({ message: "Product added to Cloud" });
+        
+        // Clean up temp file
+        fs.unlinkSync(filePath);
+        
+        res.json({ message: "Product added to Cloud Permanently" });
     } catch (e) {
+        console.error(e);
         res.status(500).json({ error: "Save failed" });
     }
 });
@@ -186,14 +207,20 @@ app.get("/api/news", async (req, res) => {
 
 app.post("/api/news", upload.single("image"), async (req, res) => {
     try {
+        const filePath = path.join(uploadPath, req.file.filename);
+        const fileData = fs.readFileSync(filePath);
+        const base64Image = `data:${req.file.mimetype};base64,${fileData.toString('base64')}`;
+
         const newItem = new Post({
             title: req.body.title,
             content: req.body.content,
-            image: "/uploads/" + req.file.filename,
+            image: base64Image,
             category: req.body.category || 'general'
         });
         await newItem.save();
-        res.json({ message: "News posted to Cloud" });
+        
+        fs.unlinkSync(filePath);
+        res.json({ message: "News posted to Cloud Permanently" });
     } catch (e) {
         res.status(500).json({ error: "Post failed" });
     }
