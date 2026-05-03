@@ -5,7 +5,7 @@ const multer = require("multer");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const { Gallery, Event, Merchandise, Sale, User } = require("./models/Schemas");
+const { Gallery, Event, Merchandise, Sale, User, AdminFingerprint } = require("./models/Schemas");
 const Devotional = require("./models/Devotional");
 const Post = require("./models/post");
 
@@ -276,14 +276,52 @@ app.get("/api/users", async (req, res) => {
 });
 
 /* =========================
-   ADMIN AUTHENTICATION
+   ADMIN AUTHENTICATION (FINGERPRINT SECURITY)
    ========================= */
-app.post("/api/admin/login", (req, res) => {
-    const { password } = req.body;
-    if (password === "PRESTIGE2026") {
-        res.json({ success: true, token: "MASTER_ADMIN_TOKEN_" + Date.now() });
-    } else {
-        res.status(401).json({ success: false, message: "❌ UNAUTHORIZED ACCESS" });
+app.post("/api/admin/login", async (req, res) => {
+    try {
+        const { password, fingerprint, deviceName } = req.body;
+        
+        if (password !== process.env.ADMIN_PASSWORD) {
+            return res.status(401).json({ success: false, message: "❌ INVALID PASSWORD" });
+        }
+
+        if (!fingerprint) {
+            return res.status(400).json({ success: false, message: "❌ SECURITY ERROR: Missing Fingerprint" });
+        }
+
+        // Check if this fingerprint is already whitelisted
+        const existing = await AdminFingerprint.findOne({ fingerprint });
+        
+        if (existing) {
+            existing.lastUsed = new Date();
+            await existing.save();
+            return res.json({ success: true, token: "MASTER_ADMIN_TOKEN_" + Date.now() });
+        }
+
+        // If not whitelisted, check how many admins are already registered
+        const count = await AdminFingerprint.countDocuments();
+        
+        if (count >= 3) {
+            return res.status(403).json({ 
+                success: false, 
+                message: "❌ SECURITY ALERT: Max Admin Devices reached (3/3). This device is BLOCKED." 
+            });
+        }
+
+        // Register new admin device
+        const newAdmin = new AdminFingerprint({ fingerprint, deviceName });
+        await newAdmin.save();
+
+        res.json({ 
+            success: true, 
+            token: "MASTER_ADMIN_TOKEN_" + Date.now(),
+            message: `✨ Device Registered (${count + 1}/3)`
+        });
+
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ success: false, message: "❌ SERVER ERROR" });
     }
 });
 

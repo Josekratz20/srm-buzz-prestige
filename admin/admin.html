@@ -14,11 +14,11 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: 'Poppins', sans-serif; background: var(--admin-bg); color: var(--admin-text); display: flex; min-height: 100vh; }
         
-        .sidebar { width: 280px; background: #020617; padding: 40px 20px; border-right: 1px solid rgba(255,255,255,0.1); }
+        .sidebar { width: 280px; background: #020617; padding: 40px 20px; border-right: 1px solid rgba(255,255,255,0.1); display: none; }
+        .main-content { flex: 1; padding: 60px; overflow-y: auto; display: none; }
         .nav-item { display: block; padding: 15px 20px; color: rgba(255,255,255,0.6); text-decoration: none; border-radius: 10px; margin-bottom: 5px; transition: 0.3s; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background: rgba(255,215,0,0.1); color: var(--admin-accent); }
         
-        .main-content { flex: 1; padding: 60px; overflow-y: auto; }
         .admin-section { display: none; }
         .dashboard-card { background: var(--admin-card); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px; }
         
@@ -29,6 +29,7 @@
     </style>
 </head>
 <body>
+    <div id="master-admin-root" style="display: contents;">
     <div class="sidebar">
         <h2 style="color:var(--admin-accent); margin-bottom:40px; text-align:center;">SRM PRESTIGE</h2>
         <a class="nav-item active" onclick="showSection('overview', this)">📊 Dashboard</a>
@@ -142,8 +143,9 @@
         </header>
 
         <div id="alert-box" style="margin-bottom: 20px;"></div>
-        <!-- Sections hidden... -->
+        <!-- Sections... -->
     </main>
+</div>
 
     <!-- ADMIN LOGIN OVERLAY -->
     <div id="login-overlay" style="position:fixed; inset:0; background:var(--admin-bg); z-index:100000; display:flex; align-items:center; justify-content:center;">
@@ -160,25 +162,29 @@
         function checkAuth() {
             if (sessionStorage.getItem('masterToken')) {
                 document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('master-admin-root').style.display = 'block';
+                document.querySelector('.main-content').style.display = 'block';
                 document.querySelector('.sidebar').style.display = 'block';
             } else {
                 document.getElementById('login-overlay').style.display = 'flex';
-                document.getElementById('master-admin-root').style.display = 'none';
+                document.querySelector('.main-content').style.display = 'none';
                 document.querySelector('.sidebar').style.display = 'none';
             }
         }
 
         async function tryAdminLogin() {
             const pass = document.getElementById('admin-pass').value;
+            const fingerprint = btoa(navigator.userAgent + screen.width + screen.height);
+            const deviceName = navigator.platform + " / " + (navigator.vendor || "Unknown");
+
             try {
                 const res = await fetch('https://srm-buzz-prestige.onrender.com/api/admin/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: pass })
+                    body: JSON.stringify({ password: pass, fingerprint, deviceName })
                 });
                 const data = await res.json();
                 if (data.success) {
+                    if (data.message) alert(data.message); // Show device registration success
                     sessionStorage.setItem('masterToken', data.token);
                     checkAuth();
                 } else {
@@ -187,7 +193,7 @@
                     err.style.display = 'block';
                 }
             } catch (e) {
-                alert("Connection failed.");
+                alert("Connection failed or Device Blocked.");
             }
         }
 

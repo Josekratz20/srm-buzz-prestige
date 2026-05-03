@@ -43,10 +43,18 @@ const userSchema = new mongoose.Schema({
     joined: { type: Date, default: Date.now }
 });
 
+// Admin Fingerprint Whitelist (Max 3)
+const adminFingerprintSchema = new mongoose.Schema({
+    fingerprint: { type: String, unique: true },
+    deviceName: String,
+    lastUsed: { type: Date, default: Date.now }
+});
+
 module.exports = {
     Gallery: mongoose.model('Gallery', gallerySchema),
     Event: mongoose.model('Event', eventSchema),
     Merchandise: mongoose.model('Merchandise', merchandiseSchema),
     Sale: mongoose.model('Sale', saleSchema),
-    User: mongoose.model('User', userSchema)
+    User: mongoose.model('User', userSchema),
+    AdminFingerprint: mongoose.model('AdminFingerprint', adminFingerprintSchema)
 };
