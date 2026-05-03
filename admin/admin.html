@@ -34,6 +34,7 @@
         <a class="nav-item active" onclick="showSection('overview', this)">📊 Dashboard</a>
         <a class="nav-item" onclick="showSection('store', this)">👜 Official Store</a>
         <a class="nav-item" onclick="showSection('stories', this)">📖 Buzz Vibez</a>
+        <a class="nav-item" onclick="showSection('fuel', this)">📜 Soul Fuel (Devotional)</a>
         <a class="nav-item" onclick="showSection('gallery', this)">📸 Timeless Gallery</a>
         <a class="nav-item" onclick="showSection('events', this)">📅 Events Hub</a>
         <a class="nav-item" onclick="showSection('sales', this)">💰 Point of Sales</a>
@@ -82,7 +83,6 @@
                     <select name="category" class="admin-input" required>
                         <option value="scouts">Scouts (Vibez)</option>
                         <option value="divinity">Divinity (Events)</option>
-                        <option value="devotional">Devotional (Soul Fuel)</option>
                     </select>
                     <label style="display:block; margin-top:20px;">Content</label><textarea name="content" class="admin-input" rows="5" required></textarea>
                     <label style="display:block; margin-top:20px;">Feature Image</label><input type="file" name="image" class="admin-input" accept="image/*" required>
@@ -219,19 +219,20 @@
 
             try {
                 let res;
+                const finalUrl = url.startsWith('http') ? url : 'https://srm-buzz-prestige.onrender.com' + url;
                 if(isJson) {
                     const data = {
                         title: form.querySelector('[name="title"]').value,
                         content: form.querySelector('[name="content"]').value
                     };
-                    res = await fetch('https://srm-buzz-prestige.onrender.com' + url, {
+                    res = await fetch(finalUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
                     });
                 } else {
                     const formData = new FormData(form);
-                    res = await fetch('https://srm-buzz-prestige.onrender.com' + url, { method: 'POST', body: formData });
+                    res = await fetch(finalUrl, { method: 'POST', body: formData });
                 }
 
                 if(res.ok) {
@@ -256,7 +257,8 @@
             
             listEl.innerHTML = "<p>Scanning register...</p>";
             try {
-                const res = await fetch('https://srm-buzz-prestige.onrender.com' + endpoints[section] + "?v=" + Date.now());
+                const finalUrl = endpoints[section].startsWith('http') ? endpoints[section] : 'https://srm-buzz-prestige.onrender.com' + endpoints[section];
+                const res = await fetch(finalUrl + "?v=" + Date.now());
                 const data = await res.json();
                 listEl.innerHTML = "";
                 data.forEach(item => {
@@ -292,7 +294,8 @@
 
         async function deleteItem(endpoint, id, section) {
             if(!confirm("Permanently delete this from the register?")) return;
-            const res = await fetch(`https://srm-buzz-prestige.onrender.com${endpoint}/${id}`, { method: 'DELETE' });
+            const finalUrl = endpoint.startsWith('http') ? endpoint : 'https://srm-buzz-prestige.onrender.com' + endpoint;
+            const res = await fetch(`${finalUrl}/${id}`, { method: 'DELETE' });
             if(res.ok) { showAlert("🗑️ Removed successfully."); loadManageList(section); }
         }
 
