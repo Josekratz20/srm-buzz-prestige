@@ -60,7 +60,7 @@
         <section id="store" class="admin-section">
             <div class="dashboard-card">
                 <h3>Add New Merchandise</h3>
-                <form onsubmit="handleMasterSubmit(event, '/api/merchandise', 'store')">
+                <form onsubmit="handleMasterSubmit(event, 'https://srm-buzz-prestige.onrender.com/api/merchandise', 'store')">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px;">
                         <div><label>Product Name</label><input type="text" name="name" class="admin-input" required></div>
                         <div><label>Price (KES)</label><input type="text" name="price" class="admin-input" required></div>
@@ -76,7 +76,7 @@
         <section id="stories" class="admin-section">
             <div class="dashboard-card">
                 <h3>Post Story</h3>
-                <form onsubmit="handleMasterSubmit(event, '/api/news', 'stories')">
+                <form onsubmit="handleMasterSubmit(event, 'https://srm-buzz-prestige.onrender.com/api/news', 'stories')">
                     <label>Story title</label><input type="text" name="title" class="admin-input" required>
                     <label style="display:block; margin-top:20px;">Category</label>
                     <select name="category" class="admin-input" required>
@@ -95,7 +95,7 @@
         <section id="gallery" class="admin-section">
             <div class="dashboard-card">
                 <h3>Upload to Gallery</h3>
-                <form onsubmit="handleMasterSubmit(event, '/api/gallery', 'gallery')">
+                <form onsubmit="handleMasterSubmit(event, 'https://srm-buzz-prestige.onrender.com/api/gallery', 'gallery')">
                     <label>Caption</label><input type="text" name="caption" class="admin-input" required>
                     <label style="display:block; margin-top:20px;">Image</label><input type="file" name="image" class="admin-input" accept="image/*" required>
                     <button type="submit" class="admin-btn">ADD TO COLLECTION</button>
@@ -107,7 +107,7 @@
         <section id="events" class="admin-section">
             <div class="dashboard-card">
                 <h3>Announce Event</h3>
-                <form onsubmit="handleMasterSubmit(event, '/api/events', 'events')">
+                <form onsubmit="handleMasterSubmit(event, 'https://srm-buzz-prestige.onrender.com/api/events', 'events')">
                     <label>Event Name</label><input type="text" name="title" class="admin-input" required>
                     <label style="display:block; margin-top:20px;">High-level Details</label><textarea name="description" class="admin-input" rows="3" required></textarea>
                     <label style="display:block; margin-top:20px;">Poster Image</label><input type="file" name="image" class="admin-input" accept="image/*" required>
@@ -120,7 +120,7 @@
         <section id="fuel" class="admin-section">
             <div class="dashboard-card">
                 <h3>Record Divine Word</h3>
-                <form onsubmit="handleMasterSubmit(event, '/api/devotionals', 'fuel', true)">
+                <form onsubmit="handleMasterSubmit(event, 'https://srm-buzz-prestige.onrender.com/api/devotionals', 'fuel', true)">
                     <label>Message Chapter/Title</label><input type="text" name="title" class="admin-input" required>
                     <label style="display:block; margin-top:20px;">The Inspiring Word</label><textarea name="content" class="admin-input" rows="8" required></textarea>
                     <button type="submit" class="admin-btn">RELEASE WORD</button>
@@ -251,7 +251,7 @@
 
         async function loadManageList(section) {
             const listEl = document.getElementById(`manage-${section}-list`);
-            const endpoints = { 'store':'/api/merchandise', 'stories':'/api/news', 'gallery':'/api/gallery', 'events':'/api/events', 'fuel':'/api/devotionals', 'sales':'/api/sales', 'users-admin':'/api/users' };
+            const endpoints = { 'store':'https://srm-buzz-prestige.onrender.com/api/merchandise', 'stories':'https://srm-buzz-prestige.onrender.com/api/news', 'gallery':'https://srm-buzz-prestige.onrender.com/api/gallery', 'events':'https://srm-buzz-prestige.onrender.com/api/events', 'fuel':'https://srm-buzz-prestige.onrender.com/api/devotionals', 'sales':'https://srm-buzz-prestige.onrender.com/api/sales', 'users-admin':'https://srm-buzz-prestige.onrender.com/api/users' };
             if(!listEl) return;
             
             listEl.innerHTML = "<p>Scanning register...</p>";
@@ -273,7 +273,7 @@
                                     <p><strong>TRANSACTION CODE:</strong> <span style="color: #4ade80; font-weight: bold; border: 1px solid #4ade80; padding: 2px 8px; border-radius: 5px;">${item.transaction_code}</span></p>
                                     <p style="opacity: 0.5; font-size: 0.8rem; margin-top: 15px;">Recorded: ${new Date(item.date).toLocaleString()}</p>
                                 </div>
-                                <button onclick="deleteItem('/api/sales', '${item._id || item.id}', 'sales')" style="background:#dc2626; color:white; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight: bold;">DELETE RECORD</button>
+                                <button onclick="deleteItem('https://srm-buzz-prestige.onrender.com/api/sales', '${item._id || item.id}', 'sales')" style="background:#dc2626; color:white; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight: bold;">DELETE RECORD</button>
                             </div>
                         `;
                     } else if (section === 'users-admin') {

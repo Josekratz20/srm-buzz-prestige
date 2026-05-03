@@ -172,7 +172,7 @@
             btn.innerText = "Please Wait...";
             btn.disabled = true;
 
-            const url = isSignup ? '/api/users/signup' : '/api/users/login';
+            const url = isSignup ? 'https://srm-buzz-prestige.onrender.com/api/users/signup' : 'https://srm-buzz-prestige.onrender.com/api/users/login';
             const body = {
                 email: document.getElementById('authEmail').value,
                 password: document.getElementById('authPass').value
@@ -211,3 +211,4 @@
     </script>
 </body>
 </html>
+
