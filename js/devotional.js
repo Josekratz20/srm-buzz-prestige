@@ -5,7 +5,7 @@ async function loadInspiration() {
     wall.innerHTML = "<p style='color:white; text-align:center;'>📜 Gathering divine downloads...</p>";
     
     try {
-        const res = await fetch("/api/devotionals");
+        const res = await fetch("https://srm-buzz-prestige.onrender.com/api/devotionals");
         const data = await res.json();
         
         if (!data || data.length === 0) {

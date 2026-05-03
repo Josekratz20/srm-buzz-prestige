@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const eventsContainer = document.getElementById("events-container");
     const devotionalContainer = document.getElementById("devotional-container");
 
-    const API_URL = "/api/news";
+    const API_URL = "https://srm-buzz-prestige.onrender.com/api/news";
 
     // Fetch all posts once
     fetch(API_URL)

@@ -81,7 +81,7 @@
             container.innerHTML = `<div class="spinner"></div>`;
 
             try {
-                const res = await fetch("/api/news");
+                const res = await fetch("https://srm-buzz-prestige.onrender.com/api/news");
                 const data = await res.json();
 
                 container.innerHTML = "";

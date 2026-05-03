@@ -2,7 +2,7 @@ const form = document.getElementById("merch-form");
 const container = document.getElementById("admin-merch-container");
 
 async function loadMerch() {
-    const res = await fetch("/api/merchandise");
+    const res = await fetch("https://srm-buzz-prestige.onrender.com/api/merchandise");
     const data = await res.json();
 
     container.innerHTML = "";
@@ -24,7 +24,7 @@ form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
 
-    await fetch("/api/merchandise", {
+    await fetch("https://srm-buzz-prestige.onrender.com/api/merchandise", {
         method: "POST",
         body: formData
     });

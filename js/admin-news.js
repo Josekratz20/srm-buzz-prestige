@@ -2,7 +2,7 @@ const form = document.getElementById("news-form");
 const container = document.getElementById("admin-news-container");
 
 async function loadNews() {
-    const res = await fetch("/api/news");
+    const res = await fetch("https://srm-buzz-prestige.onrender.com/api/news");
     const data = await res.json();
 
     container.innerHTML = "";
@@ -24,7 +24,7 @@ form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
 
-    await fetch("/api/news", {
+    await fetch("https://srm-buzz-prestige.onrender.com/api/news", {
         method: "POST",
         body: formData
     });

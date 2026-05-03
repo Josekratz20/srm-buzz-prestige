@@ -1,4 +1,4 @@
-const API_URL = "/api/news";
+const API_URL = "https://srm-buzz-prestige.onrender.com/api/news";
 
 async function fetchPosts() {
     try {
@@ -31,3 +31,4 @@ function displayPosts(posts) {
 }
 
 fetchPosts();
+

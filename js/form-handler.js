@@ -16,7 +16,7 @@ async function srm_submitForm(event, formId, successMsg) {
     try {
         // POS INTEGRATION: Record to local sales.json if it's an order
         if(formId === 'checkoutForm') {
-            await fetch('/api/sales', {
+            await fetch('https://srm-buzz-prestige.onrender.com/api/sales', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -86,3 +86,4 @@ function srm_showToast(msg, isError = false) {
         setTimeout(() => toast.remove(), 500);
     }, 4000);
 }
+

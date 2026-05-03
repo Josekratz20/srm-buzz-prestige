@@ -93,7 +93,7 @@
             formData.append("caption", caption);
 
             try {
-                const response = await fetch("/api/gallery", {
+                const response = await fetch("https://srm-buzz-prestige.onrender.com/api/gallery", {
                     method: "POST",
                     body: formData
                 });
@@ -207,7 +207,7 @@
             formData.append("caption", caption);
 
             try {
-                const response = await fetch("/api/gallery", {
+                const response = await fetch("https://srm-buzz-prestige.onrender.com/api/gallery", {
                     method: "POST",
                     body: formData
                 });

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const list = document.getElementById("galleryList");
 
     async function loadGallery() {
-        const res = await fetch("/api/gallery");
+        const res = await fetch("https://srm-buzz-prestige.onrender.com/api/gallery");
         const data = await res.json();
 
         list.innerHTML = data.map(item => `
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("image", imageFile);
         formData.append("caption", caption);
 
-        await fetch("/api/gallery", {
+        await fetch("https://srm-buzz-prestige.onrender.com/api/gallery", {
             method: "POST",
             body: formData
         });

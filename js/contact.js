@@ -7,7 +7,7 @@ form.addEventListener("submit", async (e) => {
     const name = document.getElementById("name").value;
     const message = document.getElementById("message").value;
 
-    await fetch("/api/feedback", {
+    await fetch("https://srm-buzz-prestige.onrender.com/api/feedback", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

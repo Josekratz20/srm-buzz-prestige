@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function loadGallery() {
-  fetch("/api/gallery")
+  fetch("https://srm-buzz-prestige.onrender.com/api/gallery")
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById("gallery-container");

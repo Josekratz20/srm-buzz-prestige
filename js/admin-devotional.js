@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const list = document.getElementById("devotionalList");
 
     async function loadDevotionals() {
-        const res = await fetch("/api/devotionals");
+        const res = await fetch("https://srm-buzz-prestige.onrender.com/api/devotionals");
         const data = await res.json();
 
         list.innerHTML = data.map(d => `
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const title = document.getElementById("title").value;
         const content = document.getElementById("content").value;
 
-        await fetch("/api/devotionals", {
+        await fetch("https://srm-buzz-prestige.onrender.com/api/devotionals", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

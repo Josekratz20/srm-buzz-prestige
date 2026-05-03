@@ -7,7 +7,7 @@ const galleryContainer = document.getElementById("admin-gallery-container");
 // ==========================
 async function loadGallery() {
     try {
-        const res = await fetch("/api/gallery");
+        const res = await fetch("https://srm-buzz-prestige.onrender.com/api/gallery");
         const data = await res.json();
 
         galleryContainer.innerHTML = "";
@@ -50,7 +50,7 @@ form.addEventListener("submit", async (e) => {
     const formData = new FormData(form);
 
     try {
-        const res = await fetch("/api/gallery", {
+        const res = await fetch("https://srm-buzz-prestige.onrender.com/api/gallery", {
             method: "POST",
             body: formData
         });
