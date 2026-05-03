@@ -282,7 +282,8 @@ app.post("/api/admin/login", async (req, res) => {
     try {
         const { password, fingerprint, deviceName } = req.body;
         
-        if (password !== process.env.ADMIN_PASSWORD) {
+        const adminPass = process.env.ADMIN_PASSWORD || "PRESTIGE2026";
+        if (password !== adminPass) {
             return res.status(401).json({ success: false, message: "❌ INVALID PASSWORD" });
         }
 
