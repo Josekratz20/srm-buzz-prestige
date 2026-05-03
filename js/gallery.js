@@ -20,7 +20,7 @@ function loadGallery() {
 
         card.innerHTML = `
           <div class="polaroid-img-container">
-            <img src="${item.imageUrl}" alt="${item.caption}">
+            <img src="https://srm-buzz-prestige.onrender.com${item.imageUrl}" alt="${item.caption}">
           </div>
           <p class="polaroid-caption">${item.caption || 'Live. Love. Purpose.'}</p>
         `;
